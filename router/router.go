@@ -2,7 +2,11 @@ package router
 
 import (
 	"github.com/HETIC-MT-P2021/gocqrs/controllers"
+	"github.com/HETIC-MT-P2021/gocqrs/controllers/auth"
+	"github.com/HETIC-MT-P2021/gocqrs/helpers"
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gorilla/mux"
+	"log"
 	"net/http"
 )
 
@@ -12,6 +16,7 @@ type Route struct {
 	Method      string
 	Pattern     string
 	HandlerFunc http.HandlerFunc
+	Public      bool
 }
 
 // Routes slice of Route
@@ -21,14 +26,21 @@ type Routes []Route
 func NewRouter() *mux.Router {
 
 	router := mux.NewRouter().StrictSlash(true)
+	authenticatedRouter := router.PathPrefix("/").Subrouter()
 
 	for _, route := range routes {
-		router.
+		appRouter := authenticatedRouter
+		if route.Public {
+			appRouter = router
+		}
+		appRouter.
 			Methods(route.Method).
 			Path(route.Pattern).
 			Name(route.Name).
 			Handler(route.HandlerFunc)
 	}
+
+	authenticatedRouter.Use(loggingMiddleware)
 
 	return router
 }
@@ -40,4 +52,62 @@ var routes = Routes{
 		Pattern:     "/",
 		HandlerFunc: controllers.RenderHome,
 	},
+	//Auth
+	Route{
+		Name:        "Sign In",
+		Method:      "POST",
+		Pattern:     "/signin",
+		HandlerFunc: auth.Signin,
+		Public:      true,
+	},
+	Route{
+		Name:        "Sign Up",
+		Method:      "POST",
+		Pattern:     "/signup",
+		HandlerFunc: auth.SignUp,
+		Public:      true,
+	},
+	Route{
+		Name:        "Refresh",
+		Method:      "GET",
+		HandlerFunc: auth.Refresh,
+		Public:      false,
+	},
+}
+
+func loggingMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		log.Println(r.RequestURI)
+		c, err := r.Cookie("token")
+		if err != nil {
+			if err == http.ErrNoCookie {
+				helpers.WriteErrorJSON(w, http.StatusUnauthorized, "auth is not logged in")
+				return
+			}
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		tknStr := c.Value
+		claims := &auth.Claims{}
+		tkn, err := jwt.ParseWithClaims(tknStr, claims, func(token *jwt.Token) (interface{}, error) {
+			return auth.JwtKey, nil
+		})
+		if err != nil {
+			if err == jwt.ErrSignatureInvalid {
+				helpers.WriteErrorJSON(w, http.StatusUnauthorized, "invalid signature")
+				return
+			}
+			helpers.WriteErrorJSON(w, http.StatusBadRequest, "Bad request")
+			return
+		}
+		if !tkn.Valid {
+			helpers.WriteErrorJSON(w, http.StatusUnauthorized, "invalid token")
+			return
+		}
+
+		auth.Refresh(w, r)
+
+		next.ServeHTTP(w, r)
+	})
 }

@@ -1,0 +1,8 @@
+CREATE TABLE api_user (
+	id BIGINT NOT NULL AUTO_INCREMENT,
+	username VARCHAR(50),
+	email VARCHAR(255),
+	password VARCHAR(255),
+	role VARCHAR(20),
+	PRIMARY KEY (id)
+);

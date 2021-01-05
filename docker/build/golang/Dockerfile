@@ -11,7 +11,7 @@ RUN apk update && apk upgrade && \
     apk add --no-cache bash git openssh
 
 # Add Maintainer Info
-LABEL maintainer="Thomas Raineau - Hetic"
+LABEL maintainer="Groupe 5 - Hetic"
 
 WORKDIR /go/src/gocqrs
 COPY go.sum go.mod /go/src/gocqrs/
