@@ -2,10 +2,11 @@ package users
 
 import (
 	"database/sql"
+	"github.com/HETIC-MT-P2021/gocqrs/models"
 )
 
 //GetUser is for getting a user by username
-func (repository *Repository) GetUser(username string) (*User, error) {
+func (repository *Repository) GetUser(username string) (*models.User, error) {
 	row := repository.Conn.QueryRow(`
 		SELECT 
 		u.id, 
@@ -15,7 +16,7 @@ func (repository *Repository) GetUser(username string) (*User, error) {
 		u.role 
 		FROM api_user u 
 		WHERE u.username=(?)`, username)
-	var user User
+	var user models.User
 	switch err := row.Scan(&user.ID, &user.Username, &user.Email, &user.Password, &user.Role); err {
 	case sql.ErrNoRows:
 		return nil, nil
@@ -27,7 +28,7 @@ func (repository *Repository) GetUser(username string) (*User, error) {
 }
 
 //SaveUser is for saving a new user
-func (repository *Repository) SaveUser(user *User) error {
+func (repository *Repository) SaveUser(user *models.User) error {
 	stmt, err := repository.Conn.Prepare(`
 	INSERT INTO api_user 
 	(username, email, password, role) 

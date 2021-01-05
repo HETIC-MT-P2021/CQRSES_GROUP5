@@ -1,4 +1,4 @@
-package users
+package models
 
 //User is a user model
 type User struct {

@@ -2,6 +2,7 @@ package auth
 
 import (
 	"encoding/json"
+	"github.com/HETIC-MT-P2021/gocqrs/models"
 	"log"
 	"net/http"
 	"time"
@@ -96,7 +97,7 @@ func Signin(w http.ResponseWriter, r *http.Request) {
 
 //SignUp is used for signing up
 func SignUp(w http.ResponseWriter, r *http.Request) {
-	var user users.User
+	var user models.User
 	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
 		log.Print(err)
