@@ -1,25 +1,44 @@
 package main
 
 import (
-	"goevent/database"
-	"goevent/router"
+	"fmt"
 	"log"
-	"net/http"
+	"time"
+
+	"github.com/SteakBarbare/Partiel-MT4/database"
+	"github.com/SteakBarbare/Partiel-MT4/routes"
+	"github.com/caarlos0/env"
+	"github.com/gin-gonic/gin"
+	cors "github.com/itsjamie/gin-cors"
 )
 
 func main() {
-	port := "8080"
-	newRouter := router.NewRouter()
 
-	err := database.Connect()
-	if err != nil {
-		log.Fatalf("could not connect to db: %v", err)
+	time.Sleep(5 * time.Second)
+
+	cfg := database.Config{}
+	if err := env.Parse(&cfg); err != nil {
+		log.Fatal(err)
 	}
 
-	log.Print("\nServer started on port " + port)
+	fmt.Println(cfg)
 
-	err = http.ListenAndServe(":"+port, newRouter)
-	if err != nil {
-		log.Fatalf("could not serve on port %s", port)
-	}
+	database.Connect(cfg)
+	database.MakeMigrations()
+
+	r := gin.Default()
+	
+	r.Use(cors.Middleware(cors.Config{
+		Origins:         "*",
+		Methods:         "GET, PUT, POST, DELETE",
+		RequestHeaders:  "Origin, Authorization, Content-Type",
+		ExposedHeaders:  "Authorization",
+		MaxAge:          50 * time.Second,
+		Credentials:     true,
+		ValidateHeaders: false,
+	}))
+
+	routes.InitializeRoutes(r)
+
+	log.Fatal(r.Run(":8080")) // listen and serve on 8080
 }
