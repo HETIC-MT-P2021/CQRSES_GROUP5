@@ -14,6 +14,19 @@
 
 [Corto Dufour](https://github.com/SteakBarbare)
 
+## Requirements
+
+If you use docker you will only need:
+
+- Docker;
+- Docker-Compose;
+
+Refer to [Docker-Setup](#docker-setup) to install with docker.
+
+To run this project, you will also need to install the following dependencies on your system:
+
+- [go](https://golang.org/doc/install)
+
 ## Usage
 
 ```git config core.hooksPath .githooks```
@@ -24,5 +37,11 @@
 
 ``` docker-compose up --build```
 > Run the project
+
+## Contributing
+
+- Your branch should have a name that reflects it's purpose.
+
+- Each commit must follow the [Commit Conventions](https://github.com/HETIC-MT-P2021/CQRSES_GROUP5/blob/develop/CONTRIBUTING.md)
 
 ## Resources
