@@ -1,4 +1,4 @@
-module gocqrs
+module github.com/HETIC-MT-P2021/gocqrs
 
 go 1.14
 
