@@ -2,7 +2,7 @@ package router
 
 import (
 	"github.com/gorilla/mux"
-	"goevent/controllers"
+	"gocqrs/controllers"
 	"net/http"
 )
 
