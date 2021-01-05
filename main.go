@@ -1,8 +1,8 @@
 package main
 
 import (
-	"gocqrs/database"
-	"gocqrs/router"
+	"github.com/HETIC-MT-P2021/gocqrs/database"
+	"github.com/HETIC-MT-P2021/gocqrs/router"
 	"log"
 	"net/http"
 	"os"

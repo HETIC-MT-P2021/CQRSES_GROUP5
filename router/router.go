@@ -1,8 +1,8 @@
 package router
 
 import (
+	"github.com/HETIC-MT-P2021/gocqrs/controllers"
 	"github.com/gorilla/mux"
-	"gocqrs/controllers"
 	"net/http"
 )
 
@@ -17,7 +17,7 @@ type Route struct {
 // Routes slice of Route
 type Routes []Route
 
-// newRouter registers public routes
+// NewRouter registers public routes
 func NewRouter() *mux.Router {
 
 	router := mux.NewRouter().StrictSlash(true)
