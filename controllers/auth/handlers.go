@@ -24,8 +24,8 @@ type Credentials struct {
 	Username string `json:"username"`
 }
 
-//Claims is a claims model
-type Claims struct {
+//GoQRSClaims is a claims model
+type GoQRSClaims struct {
 	ID       int64  `json:"id"`
 	Username string `json:"username"`
 	Role     string `json:"role"`
@@ -69,7 +69,7 @@ func Signin(w http.ResponseWriter, r *http.Request) {
 
 	expirationTime := time.Now().Add(5 * time.Minute)
 
-	claims := &Claims{
+	claims := &GoQRSClaims{
 		ID:       user.ID,
 		Username: creds.Username,
 		Role:     user.Role,
@@ -153,7 +153,7 @@ func Refresh(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	tknStr := c.Value
-	claims := &Claims{}
+	claims := &GoQRSClaims{}
 	tkn, err := jwt.ParseWithClaims(tknStr, claims, func(token *jwt.Token) (interface{}, error) {
 		return JwtKey, nil
 	})
