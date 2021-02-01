@@ -13,12 +13,12 @@ type CreateOrderCommand struct {
 }
 
 type AddOrderLineCommand struct {
-	Price uint
-	Meal string
+	Price   uint
+	Meal    string
 	IDOrder uint
 }
 
-type CreateOrderCommandHandler struct {}
+type CreateOrderCommandHandler struct{}
 
 func (ch CreateOrderCommandHandler) Handle(command cqrs.CommandMessage) error {
 	db := database.DbConn
@@ -28,9 +28,9 @@ func (ch CreateOrderCommandHandler) Handle(command cqrs.CommandMessage) error {
 	case *CreateOrderCommand:
 		order := &models.Order{
 			TotalPrice: 230,
-			Client: cmd.Client,
-			Reference: helpers.RandomString10(),
-			Lines: []*models.OrderLine{},
+			Client:     cmd.Client,
+			Reference:  helpers.RandomString10(),
+			Lines:      []*models.OrderLine{},
 		}
 		order.NewOrder(order)
 	case *AddOrderLineCommand:

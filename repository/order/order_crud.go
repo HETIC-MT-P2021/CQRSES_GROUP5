@@ -11,7 +11,7 @@ func GetOrder() (*models.Order, error) {
 }
 
 // TODO
-func NewOrder(order *models.Order) error{
+func NewOrder(order *models.Order) error {
 	return nil
 }
 

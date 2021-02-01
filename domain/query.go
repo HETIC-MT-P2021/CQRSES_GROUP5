@@ -1,3 +1,3 @@
 package domain
 
-type ListOrdersQuery struct {}
+type ListOrdersQuery struct{}

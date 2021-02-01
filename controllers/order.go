@@ -10,10 +10,10 @@ import (
 	"net/http"
 )
 
-func CreateOrder(w http.ResponseWriter, r *http.Request){
+func CreateOrder(w http.ResponseWriter, r *http.Request) {
 	order := models.Order{}
 
-	if err := helpers.ReadJSON(w, r, &order); err != nil{
+	if err := helpers.ReadJSON(w, r, &order); err != nil {
 		log.Printf("coucou c'est l'erreur : %v", err)
 		helpers.WriteErrorJSON(w, http.StatusInternalServerError, "can not parse JSON body")
 		return

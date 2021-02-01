@@ -15,7 +15,7 @@ func ParseUInt64(stringToParse string) (uint64, error) {
 	return uint64(intID), nil
 }
 
-func RandomString10() (string){
+func RandomString10() string {
 	n := 5
 	b := make([]byte, n)
 	if _, err := rand.Read(b); err != nil {
