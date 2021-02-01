@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	cqrs_core "github.com/HETIC-MT-P2021/gocqrs/cqrs-core"
+	"github.com/HETIC-MT-P2021/gocqrs/core/cqrs"
 	"github.com/HETIC-MT-P2021/gocqrs/domain"
 	domain_order "github.com/HETIC-MT-P2021/gocqrs/domain/order"
 	"github.com/HETIC-MT-P2021/gocqrs/helpers"
@@ -19,7 +19,7 @@ func CreateOrder(w http.ResponseWriter, r *http.Request){
 		return
 	}
 
-	command := cqrs_core.NewCommandMessage(&domain_order.CreateOrderCommand{Client: order.Client})
+	command := cqrs.NewCommandMessage(&domain_order.CreateOrderCommand{Client: order.Client})
 
 	err := domain.CommandBus.Dispatch(command)
 

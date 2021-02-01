@@ -2,7 +2,7 @@ package domain_order
 
 import (
 	"errors"
-	cqrs_core "github.com/HETIC-MT-P2021/gocqrs/cqrs-core"
+	"github.com/HETIC-MT-P2021/gocqrs/core/cqrs"
 	"github.com/HETIC-MT-P2021/gocqrs/database"
 	"github.com/HETIC-MT-P2021/gocqrs/helpers"
 	"github.com/HETIC-MT-P2021/gocqrs/models"
@@ -20,7 +20,7 @@ type AddOrderLineCommand struct {
 
 type CreateOrderCommandHandler struct {}
 
-func (ch CreateOrderCommandHandler) Handle(command cqrs_core.CommandMessage) error {
+func (ch CreateOrderCommandHandler) Handle(command cqrs.CommandMessage) error {
 	db := database.DbConn
 	repository := models.Repository{Conn: db}
 

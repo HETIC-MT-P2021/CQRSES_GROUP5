@@ -1,16 +1,16 @@
 package domain
 
 import (
-	cqrs_core "github.com/HETIC-MT-P2021/gocqrs/cqrs-core"
+	"github.com/HETIC-MT-P2021/gocqrs/core/cqrs"
 	domain_order "github.com/HETIC-MT-P2021/gocqrs/domain/order"
 )
 
-var CommandBus *cqrs_core.CommandBus
-var QueryBus *cqrs_core.QueryBus
+var CommandBus *cqrs.CommandBus
+var QueryBus *cqrs.QueryBus
 
 func InitBusses(){
-	CommandBus = cqrs_core.NewCommandBus()
-	QueryBus = cqrs_core.NewQueryBus()
+	CommandBus = cqrs.NewCommandBus()
+	QueryBus = cqrs.NewQueryBus()
 
 	_ = CommandBus.RegisterHandler(domain_order.NewCreateOrderCommandHandler(), &domain_order.CreateOrderCommand{})
 }

@@ -1,4 +1,4 @@
-package cqrs_core
+package cqrs
 
 import "fmt"
 
@@ -11,7 +11,7 @@ type CommandBus struct {
 	handlers map[string]CommandHandler
 }
 
-func NewCommandBus() *CommandBus{
+func NewCommandBus() *CommandBus {
 	cBus := &CommandBus{
 		handlers: make(map[string]CommandHandler),
 	}

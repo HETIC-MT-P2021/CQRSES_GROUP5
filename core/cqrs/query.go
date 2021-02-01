@@ -1,4 +1,4 @@
-package cqrs_core
+package cqrs
 
 import "fmt"
 
