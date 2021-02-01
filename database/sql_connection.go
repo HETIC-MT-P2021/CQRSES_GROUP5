@@ -26,8 +26,8 @@ type Config struct {
 	DbConn     *sql.DB
 }
 
-// Connect connection to database
-func Connect() error {
+// ConnectSQL connection to database
+func ConnectSQL() error {
 	cfg := Config{}
 	if err := env.Parse(&cfg); err != nil {
 		return fmt.Errorf("%+v", err)

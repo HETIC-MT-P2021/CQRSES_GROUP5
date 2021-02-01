@@ -89,7 +89,7 @@ func loggingMiddleware(next http.Handler) http.Handler {
 		}
 
 		tknStr := c.Value
-		claims := &auth.Claims{}
+		claims := &auth.GoQRSClaims{}
 		tkn, err := jwt.ParseWithClaims(tknStr, claims, func(token *jwt.Token) (interface{}, error) {
 			return auth.JwtKey, nil
 		})
