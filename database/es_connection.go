@@ -1,6 +1,7 @@
 package database
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"time"
@@ -17,20 +18,30 @@ type ConfigEs struct {
 }
 
 //ConnectES creates a new ES client and stores it
-func ConnectES(cfg *ConfigEs) error {
-
+func ConnectES(ctx context.Context, cfg *ConfigEs, foreverLoopDelay time.Duration) error {
 	client, err := elastic.NewClient(
+		elastic.SetHealthcheck(true),
 		elastic.SetSniff(true),
 		elastic.SetURL(cfg.URL),
 		elastic.SetHealthcheckInterval(15*time.Second),
 	)
 	if err != nil {
-		return fmt.Errorf("could not create an es client : %v", err)
+		return fmt.Errorf("could not create an eventsourcing client : %v", err)
 	}
 
-	log.Printf("connected to es client")
-
-	EsConn = client
+	for {
+		delay := time.After(foreverLoopDelay)
+		info, code, err := client.Ping(cfg.URL).Do(ctx)
+		if err != nil {
+			log.Printf("%v... retrying", err)
+		} else {
+			fmt.Printf("Elasticsearch returned with code %d and version %s\n", code, info.Version.Number)
+			EsConn = client
+			log.Printf("connected to es client")
+			break
+		}
+		<-delay
+	}
 
 	return nil
 }

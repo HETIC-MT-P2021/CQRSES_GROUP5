@@ -3,19 +3,22 @@ package domain_order
 import (
 	"errors"
 	"github.com/HETIC-MT-P2021/gocqrs/core/cqrs"
+	"github.com/HETIC-MT-P2021/gocqrs/core/eventsourcing"
 	"github.com/HETIC-MT-P2021/gocqrs/helpers"
 	"github.com/HETIC-MT-P2021/gocqrs/models"
 	order_repository "github.com/HETIC-MT-P2021/gocqrs/repository/order"
 )
 
 type CreateOrderCommand struct {
-	Client string
+	Customer  string
+	EventType eventsourcing.EventType
 }
 
 type AddOrderLineCommand struct {
-	Price   uint
-	Meal    string
-	IDOrder uint
+	Price     uint
+	Meal      string
+	IDOrder   uint
+	EventType eventsourcing.EventType
 }
 
 type CreateOrderCommandHandler struct{}
@@ -25,7 +28,7 @@ func (ch CreateOrderCommandHandler) Handle(command cqrs.CommandMessage) error {
 	case *CreateOrderCommand:
 		order := &models.Order{
 			TotalPrice: 0,
-			Client:     cmd.Client,
+			Customer:   cmd.Customer,
 			Reference:  helpers.RandomString10(),
 			Lines:      []*models.OrderLine{},
 		}

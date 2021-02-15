@@ -1,13 +1,16 @@
 package main
 
 import (
+	"context"
 	"github.com/HETIC-MT-P2021/gocqrs/database"
+	"github.com/HETIC-MT-P2021/gocqrs/rabbitmq"
 	"github.com/HETIC-MT-P2021/gocqrs/router"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 )
 
 func main() {
@@ -19,9 +22,18 @@ func main() {
 		log.Fatalf("could not connect to db: %v", err)
 	}
 
+	err = rabbitmq.ConnectToRabbitMq()
+	if err != nil {
+		log.Fatalf("could not connect to rabbitMQ: %v", err)
+	}
+
 	esCfg := &database.ConfigEs{URL: "http://es:9200"}
 
-	if err := database.ConnectES(esCfg); err != nil {
+	ctx := context.Background()
+
+	foreverLoopDelay := 5 * time.Second
+
+	if err := database.ConnectES(ctx, esCfg, foreverLoopDelay); err != nil {
 		log.Fatalf("could not connect to es: %v", err)
 	}
 
