@@ -87,21 +87,6 @@ var routes = Routes{
 		HandlerFunc: controllers.CreateOrder,
 		Public:      true, //@TODO : switch to false, testing purposes
 	},
-	Route{
-		Name:        "Get an order",
-		Method:      "GET",
-		Pattern:     "/orders/{order_id}",
-		HandlerFunc: controllers.TestGetInES,
-		Public:      true, //@TODO : switch to false, testing purposes
-	},
-
-	Route{
-		Name:        "Get an order",
-		Method:      "GET",
-		Pattern:     "/orders/new",
-		HandlerFunc: controllers.TestCreateInES,
-		Public:      true, //@TODO : switch to false, testing purposes
-	},
 }
 
 func loggingMiddleware(next http.Handler) http.Handler {
