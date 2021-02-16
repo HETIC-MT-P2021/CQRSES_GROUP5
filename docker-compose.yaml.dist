@@ -49,7 +49,6 @@ services:
       memlock:
         soft: -1
         hard: -1
-    mem_limit: 1g
     networks:
       - backend
 
@@ -70,6 +69,10 @@ services:
       - ./:/go:rw
     networks:
       - backend
+
+volumes:
+  esdata:
+    driver: local
 
 networks:
   backend:

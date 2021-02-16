@@ -1,7 +1,7 @@
 package models
 
 type OrderLine struct {
-	ID       uint64 `json:"id"`
+	ID      string `json:"id"`
 	Meal     string `json:"meal"`
 	Quantity uint   `json:"quantity"`
 	Price    uint   `json:"price"`

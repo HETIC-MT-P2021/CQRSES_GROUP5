@@ -36,14 +36,14 @@ func NewIndex(ctx context.Context, index string) error {
 }
 
 //NewDocument creates a new document in ES (by Index)
-func NewDocument(index string, document *Document) error {
+func NewDocument(ctx context.Context, index string, document *Document) error {
 	documentIndexed, err := database.EsConn.Index().
 		Index(index).
 		BodyJson(document.Body).
-		Do(context.Background())
+		Do(ctx)
 
 	if err != nil {
-		return fmt.Errorf("cannot add resource in index %s", index)
+		return fmt.Errorf("cannot add resource in index %s : %v", index, err)
 	}
 
 	document.ID = documentIndexed.Id
@@ -51,10 +51,9 @@ func NewDocument(index string, document *Document) error {
 	return nil
 }
 
-//GetDocument retrieves a document by its index and its ID from ES
-func GetDocumentByIndexAndID(index string, documentID string) (*Document, error) {
+//GetDocumentByIndexAndID retrieves a document by its index and its ID from ES
+func GetDocumentByIndexAndID(ctx context.Context, index string, documentID string) (*Document, error) {
 	conn := database.EsConn
-	ctx := context.Background()
 	docRetrieved, err := conn.Get().
 		Index(index).
 		Id(documentID).

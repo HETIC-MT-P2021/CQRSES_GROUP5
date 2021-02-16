@@ -3,7 +3,7 @@ package models
 import "time"
 
 type Order struct {
-	ID         uint         `json:"id"`
+	ID         string         `json:"id"`
 	Reference  string       `json:"reference"`
 	Customer   string       `json:"customer"`
 	TotalPrice uint         `json:"-"`

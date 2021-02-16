@@ -32,7 +32,7 @@ func main() {
 	ctx := context.Background()
 
 	foreverLoopDelay := 5 * time.Second
-
+	
 	if err := database.ConnectES(ctx, esCfg, foreverLoopDelay); err != nil {
 		log.Fatalf("could not connect to es: %v", err)
 	}

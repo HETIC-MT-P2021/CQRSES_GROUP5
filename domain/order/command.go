@@ -4,9 +4,7 @@ import (
 	"errors"
 	"github.com/HETIC-MT-P2021/gocqrs/core/cqrs"
 	"github.com/HETIC-MT-P2021/gocqrs/core/eventsourcing"
-	"github.com/HETIC-MT-P2021/gocqrs/helpers"
-	"github.com/HETIC-MT-P2021/gocqrs/models"
-	order_repository "github.com/HETIC-MT-P2021/gocqrs/repository/order"
+	"log"
 )
 
 type CreateOrderCommand struct {
@@ -24,28 +22,27 @@ type AddOrderLineCommand struct {
 type CreateOrderCommandHandler struct{}
 
 func (ch CreateOrderCommandHandler) Handle(command cqrs.CommandMessage) error {
-	switch cmd := command.Payload().(type) {
+	log.Printf("errrrr")
+	switch command.Payload().(type) {
 	case *CreateOrderCommand:
-		order := &models.Order{
-			TotalPrice: 0,
-			Customer:   cmd.Customer,
-			Reference:  helpers.RandomString10(),
-			Lines:      []*models.OrderLine{},
-		}
-		if err := order_repository.PersistOrder(order); err != nil {
-			return err
-		}
+		//order := &models.Order{
+		//	TotalPrice: 0,
+		//	Customer:   cmd.Customer,
+		//	Reference:  helpers.RandomString10(),
+		//	Lines:      []*models.OrderLine{},
+		//}
+		//if err := order_repository.PersistOrder(order); err != nil {
+		//	return err
+		//}
 
 	case *AddOrderLineCommand:
-		orderLine := &models.OrderLine{
-			Meal:    cmd.Meal,
-			Price:   cmd.Price,
-			IDOrder: cmd.IDOrder,
-		}
-		order_repository.PersistOrderLine(orderLine)
 	default:
+		log.Printf("YOU SHALL NOT BE ZAIRE")
 		return errors.New("bad command type")
 	}
+	
+	
+	log.Printf("poukoa tu passes pas laaaaaaaaaa")
 
 	return nil
 }
