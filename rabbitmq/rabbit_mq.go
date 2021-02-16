@@ -14,8 +14,14 @@ var (
 	RabbitMQQueue amqp.Queue
 )
 
+//RBMQQueuecreation is a rabbitmq model
+type RBMQQueuecreation struct {
+	RabbitMQChan  *amqp.Channel
+	RabbitMQQueue amqp.Queue
+}
+
 //RabbitMqEnv contains rabbitmq env credentials
-type Env struct {
+type RabbitMqEnv struct {
 	RabbitMqHost string `env:"RABBITMQ_HOST"`
 	RabbitMqPort string `env:"RABBITMQ_PORT"`
 	RabbitMqUser string `env:"RABBITMQ_DEFAULT_USER"`
@@ -24,7 +30,7 @@ type Env struct {
 
 func ConnectToRabbitMq() error {
 	time.Sleep(50 * time.Second)
-	cfg := Env{}
+	cfg := RabbitMqEnv{}
 
 	if err := env.Parse(&cfg); err != nil {
 		return fmt.Errorf("failed to parse env: %v", err)
