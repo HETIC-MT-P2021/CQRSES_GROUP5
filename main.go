@@ -2,7 +2,10 @@ package main
 
 import (
 	"context"
+	"encoding/gob"
 	"github.com/HETIC-MT-P2021/gocqrs/database"
+	"github.com/HETIC-MT-P2021/gocqrs/domain"
+	"github.com/HETIC-MT-P2021/gocqrs/models"
 	"github.com/HETIC-MT-P2021/gocqrs/rabbitmq"
 	"github.com/HETIC-MT-P2021/gocqrs/router"
 	"log"
@@ -32,10 +35,13 @@ func main() {
 	ctx := context.Background()
 
 	foreverLoopDelay := 5 * time.Second
-	
+
 	if err := database.ConnectES(ctx, esCfg, foreverLoopDelay); err != nil {
 		log.Fatalf("could not connect to es: %v", err)
 	}
+
+	domain.InitBusses()
+	gob.Register(models.Order{})
 
 	go func() {
 		log.Print("\nServer started on port " + port)

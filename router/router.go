@@ -52,6 +52,13 @@ var routes = Routes{
 		Pattern:     "/",
 		HandlerFunc: controllers.RenderHome,
 	},
+	Route{
+		Name:        "Create Order",
+		Method:      "POST",
+		Pattern:     "/order/new",
+		HandlerFunc: controllers.CreateOrder,
+		Public:      false,
+	},
 	//Auth
 	Route{
 		Name:        "Sign In",
@@ -84,7 +91,15 @@ var routes = Routes{
 		Name:        "Get an order",
 		Method:      "GET",
 		Pattern:     "/orders/{order_id}",
-		HandlerFunc: controllers.GetOrder,
+		HandlerFunc: controllers.TestGetInES,
+		Public:      true, //@TODO : switch to false, testing purposes
+	},
+
+	Route{
+		Name:        "Get an order",
+		Method:      "GET",
+		Pattern:     "/orders/new",
+		HandlerFunc: controllers.TestCreateInES,
 		Public:      true, //@TODO : switch to false, testing purposes
 	},
 }
