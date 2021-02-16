@@ -48,7 +48,6 @@ func (connector *EsConnector) NewIndex(ctx context.Context, index string) error 
 	return nil
 }
 
-
 //NewDocument creates a new document in ES (by Index)
 func (connector *EsConnector) NewDocument(ctx context.Context, index string, document *Document) error {
 	exists, err := connector.client.IndexExists(index).Do(ctx)
@@ -71,8 +70,8 @@ func (connector *EsConnector) NewDocument(ctx context.Context, index string, doc
 	return nil
 }
 
-func (connector *EsConnector) UpdateDocument(ctx context.Context, index string, document *Document) (*elastic.UpdateResponse, error){
-	
+func (connector *EsConnector) UpdateDocument(ctx context.Context, index string, document *Document) (*elastic.UpdateResponse, error) {
+
 	return connector.client.Update().Index(index).Id(document.ID).Doc(document).Do(ctx)
 }
 

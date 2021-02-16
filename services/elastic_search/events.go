@@ -7,7 +7,7 @@ import (
 )
 
 func (repository *OrderRepository) AddEventInES(ctx context.Context, event *eventsourcing.Event) error {
-	
+
 	return repository.EsConnector.NewDocument(ctx, OrderEventIndex, &Document{
 		ID:   fmt.Sprintf("%s-%s", event.Type, event.ID),
 		Body: event,

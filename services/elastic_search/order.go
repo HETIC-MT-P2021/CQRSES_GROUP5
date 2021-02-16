@@ -6,9 +6,9 @@ import (
 )
 
 const (
-	OrderIndex     = "index_order"
+	OrderIndex      = "index_order"
 	OrderEventIndex = "index_order_event"
-	OrderLineIndex = "index_order_line"
+	OrderLineIndex  = "index_order_line"
 )
 
 type OrderRepository struct {
@@ -21,7 +21,7 @@ func (repository *OrderRepository) GetOrder(ctx context.Context, orderID string)
 }
 
 //GetOrderLine is for getting an order
-func (repository *OrderRepository)  GetOrderLine(ctx context.Context, orderLineID string) (*Document, error) {
+func (repository *OrderRepository) GetOrderLine(ctx context.Context, orderLineID string) (*Document, error) {
 	return repository.EsConnector.GetDocumentByIndexAndID(ctx, OrderLineIndex, orderLineID)
 }
 
@@ -36,19 +36,19 @@ func (repository *OrderRepository) PersistOrder(ctx context.Context, order *mode
 
 //PersistOrderLine persists a fixed state of orderLine
 func (repository *OrderRepository) PersistOrderLine(ctx context.Context, orderLine *models.OrderLine) error {
-	
+
 	return repository.EsConnector.NewDocument(ctx, OrderLineIndex, &Document{
 		ID:   orderLine.ID,
 		Body: orderLine,
 	})
 }
 
-func (repository *OrderRepository) UpdateOrderLine(ctx context.Context, orderLine *models.OrderLine) error{
-	
+func (repository *OrderRepository) UpdateOrderLine(ctx context.Context, orderLine *models.OrderLine) error {
+
 	_, err := repository.EsConnector.UpdateDocument(ctx, OrderLineIndex, &Document{
 		ID:   orderLine.ID,
 		Body: orderLine,
 	})
-	
+
 	return err
 }
