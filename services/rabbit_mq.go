@@ -23,10 +23,10 @@ func PublishEventToRMQ(event eventsourcing.Event) error {
 	}
 
 	err = rbmqChanCreation.RabbitMQChan.Publish(
-		"",                                  	// exchange
-		rbmqChanCreation.RabbitMQQueue.Name, 		   	// routing key
-		false,                               	// mandatory
-		false,                               	// immediate
+		"",                                  // exchange
+		rbmqChanCreation.RabbitMQQueue.Name, // routing key
+		false,                               // mandatory
+		false,                               // immediate
 		amqp.Publishing{
 			ContentType: "application/json",
 			Body:        network.Bytes(),
