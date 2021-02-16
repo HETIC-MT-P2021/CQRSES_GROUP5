@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"github.com/HETIC-MT-P2021/gocqrs/core/cqrs"
 	"github.com/HETIC-MT-P2021/gocqrs/core/eventsourcing"
 	"github.com/HETIC-MT-P2021/gocqrs/domain"
@@ -8,6 +9,7 @@ import (
 	"github.com/HETIC-MT-P2021/gocqrs/helpers"
 	"github.com/HETIC-MT-P2021/gocqrs/models"
 	"net/http"
+	"reflect"
 )
 
 func CreateOrder(w http.ResponseWriter, r *http.Request) {
@@ -22,6 +24,8 @@ func CreateOrder(w http.ResponseWriter, r *http.Request) {
 		Customer:  order.Customer,
 		EventType: eventsourcing.AddOrder,
 	})
+
+	fmt.Sprintf("%v", reflect.TypeOf(command))
 
 	err := domain.CommandBus.Dispatch(command)
 
