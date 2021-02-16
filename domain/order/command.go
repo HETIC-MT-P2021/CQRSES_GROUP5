@@ -2,11 +2,13 @@ package domain_order
 
 import (
 	"errors"
+	"fmt"
 	"github.com/HETIC-MT-P2021/gocqrs/core/cqrs"
 	"github.com/HETIC-MT-P2021/gocqrs/core/eventsourcing"
 	"github.com/HETIC-MT-P2021/gocqrs/helpers"
 	"github.com/HETIC-MT-P2021/gocqrs/models"
-	order_repository "github.com/HETIC-MT-P2021/gocqrs/repository/order"
+	"github.com/HETIC-MT-P2021/gocqrs/services"
+	"time"
 )
 
 type CreateOrderCommand struct {
@@ -32,17 +34,28 @@ func (ch CreateOrderCommandHandler) Handle(command cqrs.CommandMessage) error {
 			Reference:  helpers.RandomString10(),
 			Lines:      []*models.OrderLine{},
 		}
-		if err := order_repository.PersistOrder(order); err != nil {
-			return err
+
+		// Creates and send an Event to RabbitMQ
+		createOrderEvent := eventsourcing.Event{
+			Type:           cmd.EventType,
+			Payload:        order,
+			CreatedAt:      time.Time{},
+			AggregateIndex: 1, // Order aggregation Index
+		}
+
+		err := services.PublishEventToRMQ(createOrderEvent)
+
+		if err != nil {
+			return fmt.Errorf("failed to publish an event: %v", err)
 		}
 
 	case *AddOrderLineCommand:
-		orderLine := &models.OrderLine{
-			Meal:    cmd.Meal,
-			Price:   cmd.Price,
-			IDOrder: cmd.IDOrder,
-		}
-		order_repository.PersistOrderLine(orderLine)
+		//orderLine := &models.OrderLine{
+		//	Meal:    cmd.Meal,
+		//	Price:   cmd.Price,
+		//	IDOrder: cmd.IDOrder,
+		//}
+		//order_repository.PersistOrderLine(orderLine)
 	default:
 		return errors.New("bad command type")
 	}

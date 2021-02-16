@@ -52,6 +52,13 @@ var routes = Routes{
 		Pattern:     "/",
 		HandlerFunc: controllers.RenderHome,
 	},
+	Route{
+		Name:        "Create Order",
+		Method:      "POST",
+		Pattern:     "/order/new",
+		HandlerFunc: controllers.CreateOrder,
+		Public:      false,
+	},
 	//Auth
 	Route{
 		Name:        "Sign In",
