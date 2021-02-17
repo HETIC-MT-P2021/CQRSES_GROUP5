@@ -3,10 +3,11 @@ package services
 import (
 	"bytes"
 	"encoding/gob"
+	"log"
+
 	"github.com/HETIC-MT-P2021/gocqrs/core/eventsourcing"
 	"github.com/HETIC-MT-P2021/gocqrs/rabbitmq"
 	"github.com/streadway/amqp"
-	"log"
 )
 
 func PublishEventToRMQ(event eventsourcing.Event) error {
