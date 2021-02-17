@@ -43,7 +43,7 @@ func (ch CreateOrderCommandHandler) Handle(command cqrs.CommandMessage) error {
 			AggregateIndex: 1, // Order aggregation Index
 		}
 
-		err := services.PublishEventToRMQ(createOrderEvent)
+		err := services.PublishEventToRBMQ(createOrderEvent)
 
 		if err != nil {
 			return fmt.Errorf("failed to publish an event: %v", err)

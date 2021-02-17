@@ -9,7 +9,7 @@ import (
 	"log"
 )
 
-func PublishEventToRMQ(event eventsourcing.Event) error {
+func PublishEventToRBMQ(event eventsourcing.Event) error {
 	rbmqChanCreation := rabbitmq.RBMQQueuecreation{
 		RabbitMQChan:  rabbitmq.RabbitMQChan,
 		RabbitMQQueue: rabbitmq.RabbitMQQueue,
