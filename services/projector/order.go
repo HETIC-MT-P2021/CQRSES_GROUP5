@@ -9,6 +9,7 @@ import (
 	"github.com/HETIC-MT-P2021/gocqrs/services/elasticsearch"
 )
 
+//ProjectEvent project an event into a readModel depending on the event type
 func ProjectEvent(event eventsourcing.Event) error {
 	orderRepository := elasticsearch.NewOrderRepository(database.EsConn)
 	ctx := context.Background()
