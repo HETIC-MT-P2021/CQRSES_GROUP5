@@ -7,6 +7,8 @@ import (
 	domain_order "github.com/HETIC-MT-P2021/gocqrs/domain/order"
 	"github.com/HETIC-MT-P2021/gocqrs/helpers"
 	"github.com/HETIC-MT-P2021/gocqrs/models"
+	"github.com/gorilla/mux"
+	"log"
 	"net/http"
 )
 
@@ -24,6 +26,132 @@ func CreateOrder(w http.ResponseWriter, r *http.Request) {
 	})
 
 	err := domain.CommandBus.Dispatch(command)
+
+	if err != nil {
+		helpers.WriteErrorJSON(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	helpers.WriteJSON(w, http.StatusOK, command)
+}
+
+func UpdateOrder(w http.ResponseWriter, r *http.Request) {
+	order := models.Order{}
+
+	if err := helpers.ReadJSON(w, r, &order); err != nil {
+		helpers.WriteErrorJSON(w, http.StatusInternalServerError, "can not parse JSON body")
+		return
+	}
+
+	muxVars := mux.Vars(r)
+	orderId, err := helpers.ParseUInt(muxVars["id"])
+
+	if err != nil {
+		log.Printf("could not parse id into int: %v", err)
+		helpers.WriteErrorJSON(w, http.StatusInternalServerError, "could not parse id")
+		return
+	}
+
+	command := cqrs.NewCommandMessage(&domain_order.UpdateOrderCommand{
+		IDOrder:   orderId,
+		Customer:  order.Customer,
+		EventType: eventsourcing.UpdateOrder,
+	})
+
+	err = domain.CommandBus.Dispatch(command)
+
+	if err != nil {
+		helpers.WriteErrorJSON(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	helpers.WriteJSON(w, http.StatusOK, command)
+}
+
+func AddOrderLine(w http.ResponseWriter, r *http.Request) {
+	orderLine := models.OrderLine{}
+
+	if err := helpers.ReadJSON(w, r, &orderLine); err != nil {
+		helpers.WriteErrorJSON(w, http.StatusInternalServerError, "can not parse JSON body")
+		return
+	}
+
+	muxVars := mux.Vars(r)
+	orderId, err := helpers.ParseUInt(muxVars["id"])
+
+	if err != nil {
+		log.Printf("could not parse id into int: %v", err)
+		helpers.WriteErrorJSON(w, http.StatusInternalServerError, "could not parse id")
+		return
+	}
+
+	command := cqrs.NewCommandMessage(&domain_order.AddOrderLineCommand{
+		IDOrder:   orderId,
+		Price:     orderLine.Price,
+		Meal:      orderLine.Meal,
+		EventType: eventsourcing.AddOrderLine,
+	})
+
+	err = domain.CommandBus.Dispatch(command)
+
+	if err != nil {
+		helpers.WriteErrorJSON(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	helpers.WriteJSON(w, http.StatusOK, command)
+}
+
+func UpdateOrderLineQuantity(w http.ResponseWriter, r *http.Request) {
+	muxVars := mux.Vars(r)
+	orderLineId, err := helpers.ParseUInt(muxVars["id"])
+
+	if err != nil {
+		log.Printf("could not parse id into int: %v", err)
+		helpers.WriteErrorJSON(w, http.StatusInternalServerError, "could not parse id")
+		return
+	}
+
+	orderLineQuantity, err := helpers.ParseUInt(muxVars["quantity"])
+
+	if err != nil {
+		log.Printf("could not parse quantity into int: %v", err)
+		helpers.WriteErrorJSON(w, http.StatusInternalServerError, "could not parse id")
+		return
+	}
+
+	command := cqrs.NewCommandMessage(&domain_order.UpdateQuantityCommand{
+		IDOrderLine: orderLineId,
+		Quantity:    orderLineQuantity,
+		EventType:   eventsourcing.UpdateQuantity,
+	})
+
+	err = domain.CommandBus.Dispatch(command)
+
+	if err != nil {
+		helpers.WriteErrorJSON(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	helpers.WriteJSON(w, http.StatusOK, command)
+}
+
+func DeleteOrderLine(w http.ResponseWriter, r *http.Request) {
+	muxVars := mux.Vars(r)
+	orderLineId, err := helpers.ParseUInt(muxVars["id"])
+
+	if err != nil {
+		log.Printf("could not parse id into int: %v", err)
+		helpers.WriteErrorJSON(w, http.StatusInternalServerError, "could not parse id")
+		return
+	}
+
+	command := cqrs.NewCommandMessage(&domain_order.DeleteOrderLine{
+		IDOrderLine: orderLineId,
+		EventType:   eventsourcing.DeleteOrderLine,
+	})
+
+	err = domain.CommandBus.Dispatch(command)
 
 	if err != nil {
 		helpers.WriteErrorJSON(w, http.StatusInternalServerError, err.Error())

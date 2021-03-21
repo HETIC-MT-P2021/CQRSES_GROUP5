@@ -15,6 +15,15 @@ func ParseUInt64(stringToParse string) (uint64, error) {
 	return uint64(intID), nil
 }
 
+// ParseInt helper to avoid code repetition
+func ParseUInt(stringToParse string) (uint, error) {
+	intID, err := strconv.Atoi(stringToParse)
+	if err != nil {
+		return 0, fmt.Errorf("could not parse string to int")
+	}
+	return uint(intID), nil
+}
+
 func RandomString10() string {
 	n := 5
 	b := make([]byte, n)

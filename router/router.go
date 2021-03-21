@@ -59,6 +59,34 @@ var routes = Routes{
 		HandlerFunc: controllers.CreateOrder,
 		Public:      false,
 	},
+	Route{
+		Name:        "Update Order",
+		Method:      "POST",
+		Pattern:     "/order/{id}/update",
+		HandlerFunc: controllers.UpdateOrder,
+		Public:      false,
+	},
+	Route{
+		Name:        "Add Order Line",
+		Method:      "POST",
+		Pattern:     "/order/{id}/orderLine/new",
+		HandlerFunc: controllers.AddOrderLine,
+		Public:      false,
+	},
+	Route{
+		Name:        "Update Order Line quantity",
+		Method:      "POST",
+		Pattern:     "/orderLine/{id}/updateQuantity",
+		HandlerFunc: controllers.UpdateOrderLineQuantity,
+		Public:      false,
+	},
+	Route{
+		Name:        "Delete Order Line",
+		Method:      "POST",
+		Pattern:     "/orderLine/{id}/delete",
+		HandlerFunc: controllers.DeleteOrderLine,
+		Public:      false,
+	},
 	//Auth
 	Route{
 		Name:        "Sign In",
