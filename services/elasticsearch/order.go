@@ -1,16 +1,18 @@
-package elastic_search
+package elasticsearch
 
 import (
 	"context"
 	"github.com/HETIC-MT-P2021/gocqrs/models"
 )
 
+// Indexes for ES
 const (
 	OrderIndex      = "index_order"
 	OrderEventIndex = "index_order_event"
 	OrderLineIndex  = "index_order_line"
 )
 
+//OrderRepository encapsulates the ESConnector for all repository methods
 type OrderRepository struct {
 	EsConnector *EsConnector
 }
@@ -43,6 +45,7 @@ func (repository *OrderRepository) PersistOrderLine(ctx context.Context, orderLi
 	})
 }
 
+//UpdateOrderLine updates an order line in ES
 func (repository *OrderRepository) UpdateOrderLine(ctx context.Context, orderLine *models.OrderLine) error {
 
 	_, err := repository.EsConnector.UpdateDocument(ctx, OrderLineIndex, &Document{

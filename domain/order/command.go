@@ -1,4 +1,4 @@
-package domain_order
+package domainorder
 
 import (
 	"errors"
@@ -11,21 +11,46 @@ import (
 	"time"
 )
 
+//CreateOrderCommand is a dto to pass the customer info and the event type, in order to create the command
 type CreateOrderCommand struct {
 	Customer  string
 	EventType eventsourcing.EventType
 }
 
-type AddOrderLineCommand struct {
-	Price     uint
-	Meal      string
-	IDOrder   uint
+//UpdateOrderCommand is a dto to pass the customer and order info and the event type, in order to create the command
+type UpdateOrderCommand struct {
+	IDOrder   string
+	Customer  string
 	EventType eventsourcing.EventType
 }
 
-type CreateOrderCommandHandler struct{}
+//AddOrderLineCommand is a dto to pass the order info and the event type, in order to create the command
+type AddOrderLineCommand struct {
+	Price     uint
+	Meal      string
+	IDOrder   string
+	Quantity  uint
+	EventType eventsourcing.EventType
+}
 
-func (ch CreateOrderCommandHandler) Handle(command cqrs.CommandMessage) error {
+//UpdateQuantityCommand is a dto to pass the order info and the event type, in order to create the command
+type UpdateQuantityCommand struct {
+	IDOrderLine string
+	Quantity    uint
+	EventType   eventsourcing.EventType
+}
+
+//DeleteOrderLine is a dto to pass the order info and the event type, in order to create the command
+type DeleteOrderLine struct {
+	IDOrderLine string
+	EventType   eventsourcing.EventType
+}
+
+//OrderCommandHandler is a struct use for OrderCommand methods
+type OrderCommandHandler struct{}
+
+//Handle handles the order command and pushes the right event to RMQ
+func (ch OrderCommandHandler) Handle(command cqrs.CommandMessage) error {
 	switch cmd := command.Payload().(type) {
 	case *CreateOrderCommand:
 		order := &models.Order{
@@ -43,19 +68,32 @@ func (ch CreateOrderCommandHandler) Handle(command cqrs.CommandMessage) error {
 			AggregateIndex: 1, // Order aggregation Index
 		}
 
-		err := services.PublishEventToRMQ(createOrderEvent)
+		err := services.PublishEventToRBMQ(createOrderEvent)
 
 		if err != nil {
 			return fmt.Errorf("failed to publish an event: %v", err)
 		}
 
-	case *AddOrderLineCommand:
-		//orderLine := &models.OrderLine{
-		//	Meal:    cmd.Meal,
-		//	Price:   cmd.Price,
-		//	IDOrder: cmd.IDOrder,
-		//}
-		//order_repository.PersistOrderLine(orderLine)
+	case *UpdateOrderCommand:
+		order := &models.Order{
+			ID:       cmd.IDOrder,
+			Customer: cmd.Customer,
+		}
+
+		// Creates and send an Event to RabbitMQ
+		updateOrderEvent := eventsourcing.Event{
+			Type:           cmd.EventType,
+			Payload:        order,
+			CreatedAt:      time.Time{},
+			AggregateIndex: 1, // Order aggregation Index
+		}
+
+		err := services.PublishEventToRBMQ(updateOrderEvent)
+
+		if err != nil {
+			return fmt.Errorf("failed to publish an event: %v", err)
+		}
+
 	default:
 		return errors.New("bad command type")
 	}
@@ -63,6 +101,82 @@ func (ch CreateOrderCommandHandler) Handle(command cqrs.CommandMessage) error {
 	return nil
 }
 
-func NewCreateOrderCommandHandler() *CreateOrderCommandHandler {
-	return &CreateOrderCommandHandler{}
+//NewOrderCommandHandler returns a new OrderCommandHandler
+func NewOrderCommandHandler() *OrderCommandHandler {
+	return &OrderCommandHandler{}
+}
+
+//OrderLineCommandHandler is a struct use for OrderCommandLine methods
+type OrderLineCommandHandler struct{}
+
+//Handle handles the order line command and pushes the right event to RMQ
+func (ch OrderLineCommandHandler) Handle(command cqrs.CommandMessage) error {
+	switch cmd := command.Payload().(type) {
+	case *AddOrderLineCommand:
+		orderLine := &models.OrderLine{
+			Meal:     cmd.Meal,
+			Price:    cmd.Price,
+			OrderID:  cmd.IDOrder,
+			Quantity: cmd.Quantity,
+		}
+
+		// Creates and send an Event to RabbitMQ
+		addOrderLineEvent := eventsourcing.Event{
+			Type:           cmd.EventType,
+			Payload:        orderLine,
+			CreatedAt:      time.Time{},
+			AggregateIndex: 1, // Order aggregation Index
+		}
+
+		err := services.PublishEventToRBMQ(addOrderLineEvent)
+
+		if err != nil {
+			return fmt.Errorf("failed to publish an event: %v", err)
+		}
+
+	case *UpdateQuantityCommand:
+		orderLine := &models.OrderLine{
+			ID:       cmd.IDOrderLine,
+			Quantity: cmd.Quantity,
+		}
+
+		// Creates and send an Event to RabbitMQ
+		updateQuantityEvent := eventsourcing.Event{
+			Type:           cmd.EventType,
+			Payload:        orderLine,
+			CreatedAt:      time.Time{},
+			AggregateIndex: 1, // Order aggregation Index
+		}
+
+		err := services.PublishEventToRBMQ(updateQuantityEvent)
+
+		if err != nil {
+			return fmt.Errorf("failed to publish an event: %v", err)
+		}
+
+	case *DeleteOrderLine:
+		// Creates and send an Event to RabbitMQ
+		updateQuantityEvent := eventsourcing.Event{
+			Type:           cmd.EventType,
+			Payload:        cmd.IDOrderLine,
+			CreatedAt:      time.Time{},
+			AggregateIndex: 1, // Order aggregation Index
+		}
+
+		err := services.PublishEventToRBMQ(updateQuantityEvent)
+
+		if err != nil {
+			return fmt.Errorf("failed to publish an event: %v", err)
+		}
+
+	default:
+		return errors.New("bad command type")
+	}
+
+	return nil
+}
+
+//NewOrderLineCommandHandler returns a new OrderLineCommandHandler
+func NewOrderLineCommandHandler() *OrderLineCommandHandler {
+	return &OrderLineCommandHandler{}
 }

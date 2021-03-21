@@ -1,4 +1,4 @@
-package elastic_search
+package elasticsearch
 
 import (
 	"context"
@@ -6,6 +6,7 @@ import (
 	"github.com/HETIC-MT-P2021/gocqrs/core/eventsourcing"
 )
 
+//AddEventInES Adds an event is ES
 func (repository *OrderRepository) AddEventInES(ctx context.Context, event *eventsourcing.Event) error {
 
 	return repository.EsConnector.NewDocument(ctx, OrderEventIndex, &Document{

@@ -1,4 +1,4 @@
-package elastic_search
+package elasticsearch
 
 import (
 	"context"
@@ -6,16 +6,19 @@ import (
 	"github.com/olivere/elastic/v7"
 )
 
+//EsConnector encapsulates ES client for all es methods
 type EsConnector struct {
 	client *elastic.Client
 }
 
+//EsService is an interface for all ES methods
 type EsService interface {
 	NewIndex(context.Context, string) error
 	NewDocument(context.Context, string, *Document) error
 	GetDocumentByIndexAndID(context.Context, string, string) (*Document, error)
 }
 
+//NewEsConnector return a new ESConnector
 func NewEsConnector(client *elastic.Client) *EsConnector {
 	return &EsConnector{client: client}
 }
@@ -70,6 +73,7 @@ func (connector *EsConnector) NewDocument(ctx context.Context, index string, doc
 	return nil
 }
 
+//UpdateDocument updates an ES document
 func (connector *EsConnector) UpdateDocument(ctx context.Context, index string, document *Document) (*elastic.UpdateResponse, error) {
 
 	return connector.client.Update().Index(index).Id(document.ID).Doc(document).Do(ctx)
