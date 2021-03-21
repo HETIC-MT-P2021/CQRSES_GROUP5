@@ -3,6 +3,7 @@ package elasticsearch
 import (
 	"context"
 	"github.com/HETIC-MT-P2021/gocqrs/models"
+	"github.com/olivere/elastic/v7"
 )
 
 // Indexes for ES
@@ -15,6 +16,11 @@ const (
 //OrderRepository encapsulates the ESConnector for all repository methods
 type OrderRepository struct {
 	EsConnector *EsConnector
+}
+
+//NewOrderRepository return a new OrderRepository
+func NewOrderRepository(client *elastic.Client) *OrderRepository {
+	return &OrderRepository{EsConnector: NewEsConnector(client)}
 }
 
 //GetOrder is for getting an order

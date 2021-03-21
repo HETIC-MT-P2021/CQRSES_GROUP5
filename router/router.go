@@ -57,7 +57,7 @@ var routes = Routes{
 		Method:      "POST",
 		Pattern:     "/order/new",
 		HandlerFunc: controllers.CreateOrder,
-		Public:      true, // @TODO set to false before merging
+		Public:      false,
 	},
 	Route{
 		Name:        "Update Order",
