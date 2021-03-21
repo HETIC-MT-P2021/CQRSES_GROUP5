@@ -3,10 +3,10 @@ package main
 import (
 	"bytes"
 	"encoding/gob"
-	"fmt"
 	"github.com/HETIC-MT-P2021/gocqrs/core/eventsourcing"
 	"github.com/HETIC-MT-P2021/gocqrs/helpers"
 	"github.com/HETIC-MT-P2021/gocqrs/models"
+	"github.com/HETIC-MT-P2021/gocqrs/services/projector"
 	"github.com/streadway/amqp"
 	"log"
 )
@@ -64,7 +64,7 @@ func main() {
 				log.Fatal(err)
 			}
 
-			fmt.Println(e.Type)
+			projector.ProjectEvent(e)
 		}
 	}()
 
