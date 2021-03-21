@@ -42,6 +42,7 @@ func main() {
 
 	domain.InitBusses()
 	gob.Register(models.Order{})
+	gob.Register(models.OrderLine{})
 
 	go func() {
 		log.Print("\nServer started on port " + port)
