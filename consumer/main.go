@@ -1,7 +1,12 @@
 package main
 
 import (
+	"bytes"
+	"encoding/gob"
+	"fmt"
+	"github.com/HETIC-MT-P2021/gocqrs/core/eventsourcing"
 	"github.com/HETIC-MT-P2021/gocqrs/helpers"
+	"github.com/HETIC-MT-P2021/gocqrs/models"
 	"github.com/streadway/amqp"
 	"log"
 )
@@ -13,21 +18,24 @@ func main() {
 		log.Fatalf("could not connect to rabbitmq: %v", err)
 	}
 
-	defer conn.Close()
-
 	ch, err := conn.Channel()
-	helpers.FailOnError(err, "Failed to open a channel")
-	defer ch.Close()
+
+	if err != nil {
+		log.Fatalf("failed to open a channel: %v", err)
+	}
 
 	q, err := ch.QueueDeclare(
-		"hello", // name
-		false,   // durable
-		false,   // delete when unused
-		false,   // exclusive
-		false,   // no-wait
-		nil,     // arguments
+		"events", // name
+		false,    // durable
+		false,    // delete when unused
+		false,    // exclusive
+		false,    // no-wait
+		nil,      // arguments
 	)
-	helpers.FailOnError(err, "Failed to declare a queue")
+
+	if err != nil {
+		log.Fatalf("failed to declare queue: %v", err)
+	}
 
 	msgs, err := ch.Consume(
 		q.Name, // queue
@@ -38,16 +46,28 @@ func main() {
 		false,  // no-wait
 		nil,    // args
 	)
-	helpers.FailOnError(err, "Failed to register a consumer")
+	if err != nil {
+		log.Fatalf("failed to register a consumer: %v", err)
+	}
 
 	forever := make(chan bool)
 
 	go func() {
-		for range msgs {
-			log.Printf("new message !")
+		for d := range msgs {
+			//var order models.Order
+			buf := bytes.NewBuffer(d.Body)
+			dec := gob.NewDecoder(buf)
+			e := eventsourcing.Event{}
+			gob.Register(models.Order{})
+
+			if err := dec.Decode(&e); err != nil {
+				log.Fatal(err)
+			}
+
+			fmt.Println(e.Type)
 		}
 	}()
 
-	log.Printf(" [*] Waiting for messages. To exit press CTRL+C")
+	log.Printf(" [*] Waiting for event messages. To exit press CTRL+C")
 	<-forever
 }

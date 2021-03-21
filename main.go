@@ -30,11 +30,6 @@ func main() {
 		log.Fatalf("could not connect to rabbitMQ: %v", err)
 	}
 
-	err = rabbitmq.StartRBMQConsumer()
-	if err != nil {
-		log.Fatalf("could not start rabbitMQ consumer: %v", err)
-	}
-
 	esCfg := &database.ConfigEs{URL: "http://es:9200"}
 
 	ctx := context.Background()
