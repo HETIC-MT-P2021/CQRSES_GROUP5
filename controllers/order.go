@@ -12,6 +12,23 @@ import (
 	"net/http"
 )
 
+//GetOrder gets an order from ES database
+func GetOrder(w http.ResponseWriter, r *http.Request) {
+
+	muxVars := mux.Vars(r)
+	orderID := muxVars["id"]
+
+	query := cqrs.NewQueryMessage(&domain_order.GetOrderQuery{OrderID: orderID})
+
+	_, err := domain.QueryBus.Dispatch(query)
+	if err != nil {
+		helpers.WriteErrorJSON(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	helpers.WriteJSON(w, http.StatusOK, "hellow")
+}
+
 //CreateOrder creates a new CreateOrder command (CQRS pattern)
 func CreateOrder(w http.ResponseWriter, r *http.Request) {
 	order := models.Order{}

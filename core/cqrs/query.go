@@ -27,7 +27,7 @@ func (b *QueryBus) Dispatch(query QueryMessage) error {
 	if handler, ok := b.handlers[query.QueryType()]; ok {
 		return handler.Handle(query)
 	}
-	return fmt.Errorf("the query bus does not have a handler for query of type: %s", query.QueryType())
+	return fmt.Errorf("the query bus does not have a handler for query of type: %s", query)
 }
 
 //RegisterHandler registers handlers for queries (CQRS pattern)
@@ -59,7 +59,7 @@ func (c *QueryDescriptor) QueryType() string {
 	return typeOf(c.query)
 }
 
-//Payload returns the actual command payload of the message.
+//Payload returns the actual query payload of the message.
 func (c *QueryDescriptor) Payload() interface{} {
 	return c.query
 }
