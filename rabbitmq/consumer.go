@@ -9,7 +9,7 @@ import (
 
 //StartRBMQConsumer add and register a consumer to the "events" RBMQ Queue
 func StartRBMQConsumer() error {
-	cfg := RabbitMqEnv{}
+	cfg := Env{}
 
 	if err := env.Parse(&cfg); err != nil {
 		return fmt.Errorf("failed to parse env: %v", err)

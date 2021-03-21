@@ -1,4 +1,4 @@
-package domain_order
+package domainorder
 
 import (
 	"errors"
@@ -11,17 +11,20 @@ import (
 	"time"
 )
 
+//CreateOrderCommand is a dto to pass the customer info and the event type, in order to create the command
 type CreateOrderCommand struct {
 	Customer  string
 	EventType eventsourcing.EventType
 }
 
+//UpdateOrderCommand is a dto to pass the customer and order info and the event type, in order to create the command
 type UpdateOrderCommand struct {
 	IDOrder   uint
 	Customer  string
 	EventType eventsourcing.EventType
 }
 
+//AddOrderLineCommand is a dto to pass the order info and the event type, in order to create the command
 type AddOrderLineCommand struct {
 	Price     uint
 	Meal      string
@@ -30,19 +33,23 @@ type AddOrderLineCommand struct {
 	EventType eventsourcing.EventType
 }
 
+//UpdateQuantityCommand is a dto to pass the order info and the event type, in order to create the command
 type UpdateQuantityCommand struct {
 	IDOrderLine uint
 	Quantity    uint
 	EventType   eventsourcing.EventType
 }
 
+//DeleteOrderLine is a dto to pass the order info and the event type, in order to create the command
 type DeleteOrderLine struct {
 	IDOrderLine uint
 	EventType   eventsourcing.EventType
 }
 
+//OrderCommandHandler is a struct use for OrderCommand methods
 type OrderCommandHandler struct{}
 
+//Handle handles the order command and pushes the right event to RMQ
 func (ch OrderCommandHandler) Handle(command cqrs.CommandMessage) error {
 	switch cmd := command.Payload().(type) {
 	case *CreateOrderCommand:
@@ -94,19 +101,22 @@ func (ch OrderCommandHandler) Handle(command cqrs.CommandMessage) error {
 	return nil
 }
 
+//NewOrderCommandHandler returns a new OrderCommandHandler
 func NewOrderCommandHandler() *OrderCommandHandler {
 	return &OrderCommandHandler{}
 }
 
+//OrderLineCommandHandler is a struct use for OrderCommandLine methods
 type OrderLineCommandHandler struct{}
 
+//Handle handles the order line command and pushes the right event to RMQ
 func (ch OrderLineCommandHandler) Handle(command cqrs.CommandMessage) error {
 	switch cmd := command.Payload().(type) {
 	case *AddOrderLineCommand:
 		orderLine := &models.OrderLine{
 			Meal:     cmd.Meal,
 			Price:    cmd.Price,
-			IDOrder:  cmd.IDOrder,
+			OrderID:  cmd.IDOrder,
 			Quantity: cmd.Quantity,
 		}
 
@@ -166,6 +176,7 @@ func (ch OrderLineCommandHandler) Handle(command cqrs.CommandMessage) error {
 	return nil
 }
 
+//NewOrderLineCommandHandler returns a new OrderLineCommandHandler
 func NewOrderLineCommandHandler() *OrderLineCommandHandler {
 	return &OrderLineCommandHandler{}
 }

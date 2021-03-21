@@ -9,6 +9,7 @@ import (
 	"log"
 )
 
+//PublishEventToRBMQ publishes an event sourcing event to RBMQ
 func PublishEventToRBMQ(event eventsourcing.Event) error {
 	rbmqChanCreation := rabbitmq.RBMQQueuecreation{
 		RabbitMQChan:  rabbitmq.RabbitMQChan,

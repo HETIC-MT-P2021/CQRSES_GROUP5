@@ -5,9 +5,13 @@ import (
 	domain_order "github.com/HETIC-MT-P2021/gocqrs/domain/order"
 )
 
-var CommandBus *cqrs.CommandBus
-var QueryBus *cqrs.QueryBus
+// Declaration of CQRS buses
+var (
+	CommandBus *cqrs.CommandBus
+	QueryBus   *cqrs.QueryBus
+)
 
+//InitBusses inits all command and queries handlers
 func InitBusses() {
 	CommandBus = cqrs.NewCommandBus()
 	QueryBus = cqrs.NewQueryBus()
