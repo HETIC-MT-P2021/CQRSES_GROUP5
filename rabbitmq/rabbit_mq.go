@@ -20,17 +20,18 @@ type RBMQQueuecreation struct {
 	RabbitMQQueue amqp.Queue
 }
 
-//RabbitMqEnv contains rabbitmq env credentials
-type RabbitMqEnv struct {
+//Env contains rabbitmq env credentials
+type Env struct {
 	RabbitMqHost string `env:"RABBITMQ_HOST"`
 	RabbitMqPort string `env:"RABBITMQ_PORT"`
 	RabbitMqUser string `env:"RABBITMQ_DEFAULT_USER"`
 	RabbitMqPass string `env:"RABBITMQ_DEFAULT_PASS"`
 }
 
+//ConnectToRabbitMq connects to rbmq host (selected in docker-compose.yml)
 func ConnectToRabbitMq() error {
 	time.Sleep(50 * time.Second)
-	cfg := RabbitMqEnv{}
+	cfg := Env{}
 
 	if err := env.Parse(&cfg); err != nil {
 		return fmt.Errorf("failed to parse env: %v", err)

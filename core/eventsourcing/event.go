@@ -13,7 +13,7 @@ type Event struct {
 	AggregateIndex uint
 }
 
-// Type of an event
+// EventType is the type of event
 type EventType string
 
 // EventType types

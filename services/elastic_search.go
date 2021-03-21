@@ -51,7 +51,7 @@ func NewDocument(index string, document *Document) error {
 	return nil
 }
 
-//GetDocument retrieves a document by its index and its ID from ES
+//GetDocumentByIndexAndID retrieves a document by its index and its ID from ES
 func GetDocumentByIndexAndID(index string, documentID string) (*Document, error) {
 	conn := database.EsConn
 	ctx := context.Background()
