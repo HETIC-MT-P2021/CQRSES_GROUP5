@@ -113,7 +113,7 @@ var routes = Routes{
 		Method:      "POST",
 		Pattern:     "/orders",
 		HandlerFunc: controllers.CreateOrder,
-		Public:      true, //@TODO : switch to false, testing purposes
+		Public:      false,
 	},
 }
 
