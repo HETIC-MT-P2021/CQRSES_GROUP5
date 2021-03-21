@@ -19,6 +19,7 @@ type ConfigEs struct {
 
 //ConnectES creates a new ES client and stores it
 func ConnectES(ctx context.Context, cfg *ConfigEs, foreverLoopDelay time.Duration) error {
+
 	client, err := elastic.NewClient(
 		elastic.SetHealthcheck(true),
 		elastic.SetSniff(true),
@@ -38,10 +39,12 @@ func ConnectES(ctx context.Context, cfg *ConfigEs, foreverLoopDelay time.Duratio
 			fmt.Printf("Elasticsearch returned with code %d and version %s\n", code, info.Version.Number)
 			EsConn = client
 			log.Printf("connected to es client")
+
 			break
 		}
 		<-delay
 	}
 
 	return nil
+
 }

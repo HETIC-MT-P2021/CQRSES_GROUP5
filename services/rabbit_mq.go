@@ -3,14 +3,16 @@ package services
 import (
 	"bytes"
 	"encoding/gob"
+	"log"
+
 	"github.com/HETIC-MT-P2021/gocqrs/core/eventsourcing"
 	"github.com/HETIC-MT-P2021/gocqrs/rabbitmq"
 	"github.com/streadway/amqp"
-	"log"
 )
 
 //PublishEventToRBMQ publishes an event sourcing event to RBMQ
 func PublishEventToRBMQ(event eventsourcing.Event) error {
+
 	rbmqChanCreation := rabbitmq.RBMQQueuecreation{
 		RabbitMQChan:  rabbitmq.RabbitMQChan,
 		RabbitMQQueue: rabbitmq.RabbitMQQueue,

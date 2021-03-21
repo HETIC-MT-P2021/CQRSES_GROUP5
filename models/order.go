@@ -4,7 +4,7 @@ import "time"
 
 //Order is the basic model for order ( which are sent in commands )
 type Order struct {
-	ID         uint         `json:"id"`
+	ID         string       `json:"id"`
 	Reference  string       `json:"reference"`
 	Customer   string       `json:"customer"`
 	TotalPrice uint         `json:"-"`

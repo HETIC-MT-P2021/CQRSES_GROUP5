@@ -46,13 +46,7 @@ func UpdateOrder(w http.ResponseWriter, r *http.Request) {
 	}
 
 	muxVars := mux.Vars(r)
-	orderID, err := helpers.ParseUInt(muxVars["id"])
-
-	if err != nil {
-		log.Printf("could not parse id into int: %v", err)
-		helpers.WriteErrorJSON(w, http.StatusInternalServerError, "could not parse id")
-		return
-	}
+	orderID := muxVars["id"]
 
 	command := cqrs.NewCommandMessage(&domain_order.UpdateOrderCommand{
 		IDOrder:   orderID,
@@ -60,8 +54,7 @@ func UpdateOrder(w http.ResponseWriter, r *http.Request) {
 		EventType: eventsourcing.UpdateOrder,
 	})
 
-	err = domain.CommandBus.Dispatch(command)
-
+	err := domain.CommandBus.Dispatch(command)
 	if err != nil {
 		helpers.WriteErrorJSON(w, http.StatusInternalServerError, err.Error())
 		return
@@ -80,13 +73,7 @@ func AddOrderLine(w http.ResponseWriter, r *http.Request) {
 	}
 
 	muxVars := mux.Vars(r)
-	orderID, err := helpers.ParseUInt(muxVars["id"])
-
-	if err != nil {
-		log.Printf("could not parse id into int: %v", err)
-		helpers.WriteErrorJSON(w, http.StatusInternalServerError, "could not parse id")
-		return
-	}
+	orderID := muxVars["id"]
 
 	command := cqrs.NewCommandMessage(&domain_order.AddOrderLineCommand{
 		IDOrder:   orderID,
@@ -95,8 +82,7 @@ func AddOrderLine(w http.ResponseWriter, r *http.Request) {
 		EventType: eventsourcing.AddOrderLine,
 	})
 
-	err = domain.CommandBus.Dispatch(command)
-
+	err := domain.CommandBus.Dispatch(command)
 	if err != nil {
 		helpers.WriteErrorJSON(w, http.StatusInternalServerError, err.Error())
 		return
@@ -108,13 +94,7 @@ func AddOrderLine(w http.ResponseWriter, r *http.Request) {
 //UpdateOrderLineQuantity creates a new UpdateOrderLineQuantity command
 func UpdateOrderLineQuantity(w http.ResponseWriter, r *http.Request) {
 	muxVars := mux.Vars(r)
-	orderLineID, err := helpers.ParseUInt(muxVars["id"])
-
-	if err != nil {
-		log.Printf("could not parse id into int: %v", err)
-		helpers.WriteErrorJSON(w, http.StatusInternalServerError, "could not parse id")
-		return
-	}
+	orderLineID := muxVars["id"]
 
 	orderLineQuantity, err := helpers.ParseUInt(muxVars["quantity"])
 
@@ -143,20 +123,14 @@ func UpdateOrderLineQuantity(w http.ResponseWriter, r *http.Request) {
 //DeleteOrderLine creates a new DeleteOrderLine command
 func DeleteOrderLine(w http.ResponseWriter, r *http.Request) {
 	muxVars := mux.Vars(r)
-	orderLineID, err := helpers.ParseUInt(muxVars["id"])
-
-	if err != nil {
-		log.Printf("could not parse id into int: %v", err)
-		helpers.WriteErrorJSON(w, http.StatusInternalServerError, "could not parse id")
-		return
-	}
+	orderLineID := muxVars["id"]
 
 	command := cqrs.NewCommandMessage(&domain_order.DeleteOrderLine{
 		IDOrderLine: orderLineID,
 		EventType:   eventsourcing.DeleteOrderLine,
 	})
 
-	err = domain.CommandBus.Dispatch(command)
+	err := domain.CommandBus.Dispatch(command)
 
 	if err != nil {
 		helpers.WriteErrorJSON(w, http.StatusInternalServerError, err.Error())

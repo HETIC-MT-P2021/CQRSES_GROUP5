@@ -19,7 +19,7 @@ type CreateOrderCommand struct {
 
 //UpdateOrderCommand is a dto to pass the customer and order info and the event type, in order to create the command
 type UpdateOrderCommand struct {
-	IDOrder   uint
+	IDOrder   string
 	Customer  string
 	EventType eventsourcing.EventType
 }
@@ -28,21 +28,21 @@ type UpdateOrderCommand struct {
 type AddOrderLineCommand struct {
 	Price     uint
 	Meal      string
-	IDOrder   uint
+	IDOrder   string
 	Quantity  uint
 	EventType eventsourcing.EventType
 }
 
 //UpdateQuantityCommand is a dto to pass the order info and the event type, in order to create the command
 type UpdateQuantityCommand struct {
-	IDOrderLine uint
+	IDOrderLine string
 	Quantity    uint
 	EventType   eventsourcing.EventType
 }
 
 //DeleteOrderLine is a dto to pass the order info and the event type, in order to create the command
 type DeleteOrderLine struct {
-	IDOrderLine uint
+	IDOrderLine string
 	EventType   eventsourcing.EventType
 }
 
