@@ -21,9 +21,9 @@ jobs:
         uses: sjkaliski/go-github-actions/fmt@v0.5.0
         
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v2
+        uses: Jerome1337/golint-action@v1.0.2
         with:
-          version: v1.29
+          golint-path: './...'
 
       - name: Test
         run: go test ./... -cover
