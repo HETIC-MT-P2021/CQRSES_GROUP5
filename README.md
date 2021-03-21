@@ -33,7 +33,7 @@ To run this project, you will also need to install the following dependencies on
 > Configure GitHooks
 
 ```cp docker-compose.yaml.dist docker-compose.yaml```
-> Docker configuration override, don't forget to add the Token and SQL variables
+> Docker configuration override, don't forget to add the Token, SQL and RBMQ variables
 
 ``` docker-compose up --build```
 > Run the project
@@ -45,3 +45,22 @@ To run this project, you will also need to install the following dependencies on
 - Each commit must follow the [Commit Conventions](https://github.com/HETIC-MT-P2021/CQRSES_GROUP5/blob/develop/CONTRIBUTING.md)
 
 ## Resources
+
+### Order
+
+| Field                 | Type            | Editable | Description                            |
+| --------------------- | --------------- | -------- | -------------------------------------- |
+| id                    | int             | no       | Order ID                               |
+| reference             | string          | yes      | Order reference                        |
+| customer              | string          | yes      | Customer name                          |
+| time                  | timestamp(UTC)  | no       | Order created on                       |
+
+
+### Order Lines
+| Field                 | Type            | Editable | Description                            |
+| --------------------- | --------------- | -------- | -------------------------------------- |
+| id                    | int             | no       | Order Line ID                          |
+| meal                  | string          | yes      | Type of meal ordered                   |
+| quantity              | int             | yes      | Quantity of meal ordered               |
+| price                 | int             | no       | Meal price (single unit)               |
+| order_id              | timestamp (UTC) | no       | Order ID                               |

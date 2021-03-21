@@ -2,6 +2,7 @@ package auth
 
 import (
 	"encoding/json"
+	"github.com/HETIC-MT-P2021/gocqrs/models"
 	"log"
 	"net/http"
 	"time"
@@ -23,8 +24,8 @@ type Credentials struct {
 	Username string `json:"username"`
 }
 
-//Claims is a claims model
-type Claims struct {
+//GoQRSClaims is a claims model
+type GoQRSClaims struct {
 	ID       int64  `json:"id"`
 	Username string `json:"username"`
 	Role     string `json:"role"`
@@ -68,7 +69,7 @@ func Signin(w http.ResponseWriter, r *http.Request) {
 
 	expirationTime := time.Now().Add(5 * time.Minute)
 
-	claims := &Claims{
+	claims := &GoQRSClaims{
 		ID:       user.ID,
 		Username: creds.Username,
 		Role:     user.Role,
@@ -96,7 +97,7 @@ func Signin(w http.ResponseWriter, r *http.Request) {
 
 //SignUp is used for signing up
 func SignUp(w http.ResponseWriter, r *http.Request) {
-	var user users.User
+	var user models.User
 	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
 		log.Print(err)
@@ -152,7 +153,7 @@ func Refresh(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	tknStr := c.Value
-	claims := &Claims{}
+	claims := &GoQRSClaims{}
 	tkn, err := jwt.ParseWithClaims(tknStr, claims, func(token *jwt.Token) (interface{}, error) {
 		return JwtKey, nil
 	})
