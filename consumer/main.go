@@ -3,12 +3,13 @@ package main
 import (
 	"bytes"
 	"encoding/gob"
+	"log"
+
 	"github.com/HETIC-MT-P2021/gocqrs/core/eventsourcing"
 	"github.com/HETIC-MT-P2021/gocqrs/helpers"
 	"github.com/HETIC-MT-P2021/gocqrs/models"
 	"github.com/HETIC-MT-P2021/gocqrs/services/projector"
 	"github.com/streadway/amqp"
-	"log"
 )
 
 func main() {
@@ -59,6 +60,7 @@ func main() {
 			dec := gob.NewDecoder(buf)
 			e := eventsourcing.Event{}
 			gob.Register(models.Order{})
+			gob.Register(models.OrderLine{})
 
 			if err := dec.Decode(&e); err != nil {
 				log.Fatal(err)

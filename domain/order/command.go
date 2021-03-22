@@ -54,7 +54,7 @@ type OrderCommandHandler struct{}
 func (ch OrderCommandHandler) Handle(command cqrs.CommandMessage) error {
 	switch cmd := command.Payload().(type) {
 	case *CreateOrderCommand:
-		order := &models.Order{
+		order := models.Order{
 			TotalPrice: 0,
 			Customer:   cmd.Customer,
 			Reference:  helpers.RandomString10(),
@@ -113,7 +113,7 @@ type OrderLineCommandHandler struct{}
 func (ch OrderLineCommandHandler) Handle(command cqrs.CommandMessage) error {
 	switch cmd := command.Payload().(type) {
 	case *AddOrderLineCommand:
-		orderLine := &models.OrderLine{
+		orderLine := models.OrderLine{
 			Meal:     cmd.Meal,
 			Price:    cmd.Price,
 			OrderID:  cmd.IDOrder,
@@ -135,7 +135,7 @@ func (ch OrderLineCommandHandler) Handle(command cqrs.CommandMessage) error {
 		}
 
 	case *UpdateQuantityCommand:
-		orderLine := &models.OrderLine{
+		orderLine := models.OrderLine{
 			ID:       cmd.IDOrderLine,
 			Quantity: cmd.Quantity,
 		}
