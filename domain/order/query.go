@@ -4,10 +4,13 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log"
+	"net/http"
+
 	"github.com/HETIC-MT-P2021/gocqrs/core/cqrs"
 	"github.com/HETIC-MT-P2021/gocqrs/database"
+	"github.com/HETIC-MT-P2021/gocqrs/helpers"
 	"github.com/HETIC-MT-P2021/gocqrs/services/elasticsearch"
-	"log"
 )
 
 //GetOrderQuery is a dto to pass the order id, in order to create the query for order
@@ -19,7 +22,7 @@ type GetOrderQuery struct {
 type OrderQueryHandler struct{}
 
 //Handle handles the order query and retrieves the order from Elastic Search
-func (ch OrderQueryHandler) Handle(query cqrs.QueryMessage) error {
+func (ch OrderQueryHandler) Handle(query cqrs.QueryMessage, w *http.ResponseWriter) error {
 
 	ctx := context.Background()
 
@@ -29,11 +32,12 @@ func (ch OrderQueryHandler) Handle(query cqrs.QueryMessage) error {
 
 		log.Printf("id : %s", quy.OrderID)
 
-		_, err := orderRepository.GetOrder(ctx, quy.OrderID)
+		orderDoc, err := orderRepository.GetOrder(ctx, quy.OrderID)
 		if err != nil {
 			return fmt.Errorf("failed to retrieve order: %v", err)
 		}
 
+		helpers.WriteJSON(*w, http.StatusOK, orderDoc)
 		return err
 
 	default:

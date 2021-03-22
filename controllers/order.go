@@ -1,6 +1,9 @@
 package controllers
 
 import (
+	"log"
+	"net/http"
+
 	"github.com/HETIC-MT-P2021/gocqrs/core/cqrs"
 	"github.com/HETIC-MT-P2021/gocqrs/core/eventsourcing"
 	"github.com/HETIC-MT-P2021/gocqrs/domain"
@@ -8,8 +11,6 @@ import (
 	"github.com/HETIC-MT-P2021/gocqrs/helpers"
 	"github.com/HETIC-MT-P2021/gocqrs/models"
 	"github.com/gorilla/mux"
-	"log"
-	"net/http"
 )
 
 //GetOrder gets an order from ES database
@@ -20,7 +21,7 @@ func GetOrder(w http.ResponseWriter, r *http.Request) {
 
 	query := cqrs.NewQueryMessage(&domain_order.GetOrderQuery{OrderID: orderID})
 
-	_, err := domain.QueryBus.Dispatch(query)
+	err := domain.QueryBus.Dispatch(query, &w)
 	if err != nil {
 		helpers.WriteErrorJSON(w, http.StatusInternalServerError, err.Error())
 		return
