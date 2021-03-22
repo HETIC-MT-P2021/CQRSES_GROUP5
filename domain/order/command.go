@@ -3,12 +3,13 @@ package domainorder
 import (
 	"errors"
 	"fmt"
+	"time"
+
 	"github.com/HETIC-MT-P2021/gocqrs/core/cqrs"
 	"github.com/HETIC-MT-P2021/gocqrs/core/eventsourcing"
 	"github.com/HETIC-MT-P2021/gocqrs/helpers"
 	"github.com/HETIC-MT-P2021/gocqrs/models"
 	"github.com/HETIC-MT-P2021/gocqrs/services"
-	"time"
 )
 
 //CreateOrderCommand is a dto to pass the customer info and the event type, in order to create the command
@@ -57,7 +58,6 @@ func (ch OrderCommandHandler) Handle(command cqrs.CommandMessage) error {
 			TotalPrice: 0,
 			Customer:   cmd.Customer,
 			Reference:  helpers.RandomString10(),
-			Lines:      []*models.OrderLine{},
 		}
 
 		// Creates and send an Event to RabbitMQ

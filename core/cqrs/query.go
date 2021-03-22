@@ -1,6 +1,9 @@
 package cqrs
 
-import "fmt"
+import (
+	"fmt"
+	"net/http"
+)
 
 //QueryMessage is an interface for all query messages methodss
 type QueryMessage interface {
@@ -23,9 +26,9 @@ func NewQueryBus() *QueryBus {
 }
 
 //Dispatch dispatches query buses (CQRS pattern)
-func (b *QueryBus) Dispatch(query QueryMessage) error {
+func (b *QueryBus) Dispatch(query QueryMessage, w *http.ResponseWriter) error {
 	if handler, ok := b.handlers[query.QueryType()]; ok {
-		return handler.Handle(query)
+		return handler.Handle(query, w)
 	}
 	return fmt.Errorf("the query bus does not have a handler for query of type: %s", query)
 }

@@ -9,5 +9,5 @@ type Order struct {
 	Customer   string       `json:"customer"`
 	TotalPrice uint         `json:"-"`
 	Date       time.Time    `json:"time"`
-	Lines      []*OrderLine `json:"-"`
+	Lines      []string `json:"-"`
 }
