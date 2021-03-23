@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"log"
 	"net/http"
 
 	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/core/cqrs"
@@ -29,8 +28,6 @@ func (ch OrderQueryHandler) Handle(query cqrs.QueryMessage, w *http.ResponseWrit
 	switch quy := query.Payload().(type) {
 	case *GetOrderQuery:
 		orderRepository := elasticsearch.NewOrderRepository(database.EsConn)
-
-		log.Printf("id : %s", quy.OrderID)
 
 		orderDoc, err := orderRepository.GetOrder(ctx, quy.OrderID)
 		if err != nil {
