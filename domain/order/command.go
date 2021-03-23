@@ -46,10 +46,10 @@ type DeleteOrderLine struct {
 	EventType   eventsourcing.EventType
 }
 
-//OrderCommandHandler is a struct use for OrderCommand methods
+//CreateOrderCommandHandler is a struct use for OrderCommand methods
 type CreateOrderCommandHandler struct{}
 
-//Handle handles the order command and pushes the right event to RMQ
+//Handle handles the CreateOrderCommand and pushes the right event to RMQ
 func (ch CreateOrderCommandHandler) Handle(command cqrs.CommandMessage) error {
 	switch cmd := command.Payload().(type) {
 	case *CreateOrderCommand:
@@ -80,15 +80,15 @@ func (ch CreateOrderCommandHandler) Handle(command cqrs.CommandMessage) error {
 	return nil
 }
 
-//NewOrderCommandHandler returns a new OrderCommandHandler
+//NewCreateOrderCommandHandler returns a new CreateOrderCommandHandler
 func NewCreateOrderCommandHandler() *CreateOrderCommandHandler {
 	return &CreateOrderCommandHandler{}
 }
 
-//OrderCommandHandler is a struct use for OrderCommand methods
+//UpdateOrderCommandHandler is a struct use for OrderCommand methods
 type UpdateOrderCommandHandler struct{}
 
-//Handle handles the order command and pushes the right event to RMQ
+//Handle handles the UpdateOrderCommandHandler and pushes the right event to RMQ
 func (ch UpdateOrderCommandHandler) Handle(command cqrs.CommandMessage) error {
 	switch cmd := command.Payload().(type) {
 	case *UpdateOrderCommand:
@@ -118,15 +118,15 @@ func (ch UpdateOrderCommandHandler) Handle(command cqrs.CommandMessage) error {
 	return nil
 }
 
-//NewOrderCommandHandler returns a new OrderCommandHandler
+//NewUpdateOrderCommandHandler returns a new UpdateOrderCommandHandler
 func NewUpdateOrderCommandHandler() *UpdateOrderCommandHandler {
 	return &UpdateOrderCommandHandler{}
 }
 
-//OrderLineCommandHandler is a struct use for OrderCommandLine methods
+//AddOrderLineCommandHandler is a struct use for OrderCommandLine methods
 type AddOrderLineCommandHandler struct{}
 
-//Handle handles the order line command and pushes the right event to RMQ
+//Handle handles the AddOrderLineCommand and pushes the right event to RMQ
 func (ch AddOrderLineCommandHandler) Handle(command cqrs.CommandMessage) error {
 	switch cmd := command.Payload().(type) {
 	case *AddOrderLineCommand:
@@ -158,7 +158,7 @@ func (ch AddOrderLineCommandHandler) Handle(command cqrs.CommandMessage) error {
 	return nil
 }
 
-//NewOrderLineCommandHandler returns a new OrderLineCommandHandler
+//NewAddOrderLineCommandHandler returns a new AddOrderLineCommandHandler
 func NewAddOrderLineCommandHandler() *AddOrderLineCommandHandler {
 	return &AddOrderLineCommandHandler{}
 }
@@ -166,7 +166,7 @@ func NewAddOrderLineCommandHandler() *AddOrderLineCommandHandler {
 //OrderLineCommandHandler is a struct use for OrderCommandLine methods
 type UpdateQuantityCommandHandler struct{}
 
-//Handle handles the order line command and pushes the right event to RMQ
+//Handle handles the UpdateQuantityCommand and pushes the right event to RMQ
 func (ch UpdateQuantityCommandHandler) Handle(command cqrs.CommandMessage) error {
 	switch cmd := command.Payload().(type) {
 	case *UpdateQuantityCommand:
@@ -196,15 +196,15 @@ func (ch UpdateQuantityCommandHandler) Handle(command cqrs.CommandMessage) error
 	return nil
 }
 
-//NewOrderLineCommandHandler returns a new OrderLineCommandHandler
+//NewUpdateQuantityCommandHandler returns a new UpdateQuantityCommandHandler
 func NewUpdateQuantityCommandHandler() *UpdateQuantityCommandHandler {
 	return &UpdateQuantityCommandHandler{}
 }
 
-//OrderLineCommandHandler is a struct use for OrderCommandLine methods
+//DeleteOrderLineCommandHandler is a struct use for DeleteOrderLine methods
 type DeleteOrderLineCommandHandler struct{}
 
-//Handle handles the order line command and pushes the right event to RMQ
+//Handle handles the DeleteOrderLine command and pushes the right event to RMQ
 func (ch DeleteOrderLineCommandHandler) Handle(command cqrs.CommandMessage) error {
 	switch cmd := command.Payload().(type) {
 	case *DeleteOrderLine:
@@ -229,7 +229,7 @@ func (ch DeleteOrderLineCommandHandler) Handle(command cqrs.CommandMessage) erro
 	return nil
 }
 
-//NewOrderLineCommandHandler returns a new OrderLineCommandHandler
+//NewDeleteLineCommandHandler returns a new DeleteOrderLineCommandHandler
 func NewDeleteOrderLineCommandHandler() *DeleteOrderLineCommandHandler {
 	return &DeleteOrderLineCommandHandler{}
 }
