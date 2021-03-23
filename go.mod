@@ -10,5 +10,10 @@ require (
 	github.com/gorilla/mux v1.8.0
 	github.com/olivere/elastic/v7 v7.0.22
 	github.com/streadway/amqp v1.0.0
+	go101.org/golds v0.2.6 // indirect
 	golang.org/x/crypto v0.0.0-20201221181555-eec23a3978ad
+	golang.org/x/mod v0.4.2 // indirect
+	golang.org/x/sys v0.0.0-20210320140829-1e4c9ba3b0c4 // indirect
+	golang.org/x/text v0.3.5 // indirect
+	golang.org/x/tools v0.1.0 // indirect
 )
