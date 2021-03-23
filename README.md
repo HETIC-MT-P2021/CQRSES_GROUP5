@@ -28,6 +28,10 @@
 
 > Run the project
 
+## Consumer repo
+
+https://github.com/HETIC-MT-P2021/CQRSES_GROUP5_CONSUMER
+
 ## Resources
 
 ### Order
