@@ -88,4 +88,5 @@ volumes:
 
 networks:
   backend:
+    name: gocqrs-network
     driver: "bridge"
