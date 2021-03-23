@@ -6,6 +6,7 @@ import (
 	"log"
 	"time"
 
+	"github.com/caarlos0/env/v6"
 	"github.com/olivere/elastic/v7"
 )
 
@@ -14,20 +15,35 @@ var EsConn *elastic.Client
 
 //ConfigEs to configure ES client
 type ConfigEs struct {
-	URL string
+	URL string `env:"ES_URL"`
+}
+
+//GetEsConn returns the es client connexion.
+func GetEsConn(ctx context.Context, foreverLoopDelay time.Duration) (*elastic.Client, error) {
+	if EsConn == nil {
+		if err := ConnectES(ctx, foreverLoopDelay); err != nil {
+			return nil, fmt.Errorf("could not connect elastic search: %v", err)
+		}
+	}
+
+	return EsConn, nil
 }
 
 //ConnectES creates a new ES client and stores it
-func ConnectES(ctx context.Context, cfg *ConfigEs, foreverLoopDelay time.Duration) error {
+func ConnectES(ctx context.Context, foreverLoopDelay time.Duration) error {
+	cfg := ConfigEs{}
+	if err := env.Parse(&cfg); err != nil {
+		return fmt.Errorf("could not parse env : %v", err)
+	}
 
 	client, err := elastic.NewClient(
 		elastic.SetHealthcheck(true),
-		elastic.SetSniff(true),
+		elastic.SetSniff(false),
 		elastic.SetURL(cfg.URL),
 		elastic.SetHealthcheckInterval(15*time.Second),
 	)
 	if err != nil {
-		return fmt.Errorf("could not create an eventsourcing client : %v", err)
+		return fmt.Errorf("could not create an elastic search client : %v", err)
 	}
 
 	for {

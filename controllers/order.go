@@ -1,16 +1,34 @@
 package controllers
 
 import (
-	"github.com/HETIC-MT-P2021/gocqrs/core/cqrs"
-	"github.com/HETIC-MT-P2021/gocqrs/core/eventsourcing"
-	"github.com/HETIC-MT-P2021/gocqrs/domain"
-	domain_order "github.com/HETIC-MT-P2021/gocqrs/domain/order"
-	"github.com/HETIC-MT-P2021/gocqrs/helpers"
-	"github.com/HETIC-MT-P2021/gocqrs/models"
-	"github.com/gorilla/mux"
 	"log"
 	"net/http"
+
+	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/core/cqrs"
+	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/core/eventsourcing"
+	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/domain"
+	domain_order "github.com/HETIC-MT-P2021/CQRSES_GROUP5/domain/order"
+	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/helpers"
+	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/models"
+	"github.com/gorilla/mux"
 )
+
+//GetOrder gets an order from ES database
+func GetOrder(w http.ResponseWriter, r *http.Request) {
+
+	muxVars := mux.Vars(r)
+	orderID := muxVars["id"]
+
+	query := cqrs.NewQueryMessage(&domain_order.GetOrderQuery{OrderID: orderID})
+
+	err := domain.QueryBus.Dispatch(query, &w)
+	if err != nil {
+		helpers.WriteErrorJSON(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	helpers.WriteJSON(w, http.StatusOK, "hellow")
+}
 
 //CreateOrder creates a new CreateOrder command (CQRS pattern)
 func CreateOrder(w http.ResponseWriter, r *http.Request) {

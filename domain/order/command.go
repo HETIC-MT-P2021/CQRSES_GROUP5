@@ -3,12 +3,13 @@ package domainorder
 import (
 	"errors"
 	"fmt"
-	"github.com/HETIC-MT-P2021/gocqrs/core/cqrs"
-	"github.com/HETIC-MT-P2021/gocqrs/core/eventsourcing"
-	"github.com/HETIC-MT-P2021/gocqrs/helpers"
-	"github.com/HETIC-MT-P2021/gocqrs/models"
-	"github.com/HETIC-MT-P2021/gocqrs/services"
 	"time"
+
+	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/core/cqrs"
+	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/core/eventsourcing"
+	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/helpers"
+	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/models"
+	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/services"
 )
 
 //CreateOrderCommand is a dto to pass the customer info and the event type, in order to create the command
@@ -53,11 +54,10 @@ type OrderCommandHandler struct{}
 func (ch OrderCommandHandler) Handle(command cqrs.CommandMessage) error {
 	switch cmd := command.Payload().(type) {
 	case *CreateOrderCommand:
-		order := &models.Order{
+		order := models.Order{
 			TotalPrice: 0,
 			Customer:   cmd.Customer,
 			Reference:  helpers.RandomString10(),
-			Lines:      []*models.OrderLine{},
 		}
 
 		// Creates and send an Event to RabbitMQ
@@ -113,7 +113,7 @@ type OrderLineCommandHandler struct{}
 func (ch OrderLineCommandHandler) Handle(command cqrs.CommandMessage) error {
 	switch cmd := command.Payload().(type) {
 	case *AddOrderLineCommand:
-		orderLine := &models.OrderLine{
+		orderLine := models.OrderLine{
 			Meal:     cmd.Meal,
 			Price:    cmd.Price,
 			OrderID:  cmd.IDOrder,
@@ -135,7 +135,7 @@ func (ch OrderLineCommandHandler) Handle(command cqrs.CommandMessage) error {
 		}
 
 	case *UpdateQuantityCommand:
-		orderLine := &models.OrderLine{
+		orderLine := models.OrderLine{
 			ID:       cmd.IDOrderLine,
 			Quantity: cmd.Quantity,
 		}
