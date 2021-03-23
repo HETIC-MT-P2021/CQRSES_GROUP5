@@ -2,9 +2,10 @@ package rabbitmq
 
 import (
 	"fmt"
+	"time"
+
 	"github.com/caarlos0/env/v6"
 	"github.com/streadway/amqp"
-	"time"
 )
 
 var (
@@ -36,8 +37,6 @@ func ConnectToRabbitMq() error {
 	if err := env.Parse(&cfg); err != nil {
 		return fmt.Errorf("failed to parse env: %v", err)
 	}
-
-	fmt.Printf("Config Rabbit MQ : %+v \n", cfg)
 
 	conn, err := amqp.Dial(fmt.Sprintf("amqp://%s:%s@%s:%s",
 		cfg.RabbitMqPass,

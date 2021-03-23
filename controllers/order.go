@@ -1,16 +1,32 @@
 package controllers
 
 import (
-	"github.com/HETIC-MT-P2021/gocqrs/core/cqrs"
-	"github.com/HETIC-MT-P2021/gocqrs/core/eventsourcing"
-	"github.com/HETIC-MT-P2021/gocqrs/domain"
-	domain_order "github.com/HETIC-MT-P2021/gocqrs/domain/order"
-	"github.com/HETIC-MT-P2021/gocqrs/helpers"
-	"github.com/HETIC-MT-P2021/gocqrs/models"
-	"github.com/gorilla/mux"
 	"log"
 	"net/http"
+
+	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/core/cqrs"
+	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/core/eventsourcing"
+	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/domain"
+	domain_order "github.com/HETIC-MT-P2021/CQRSES_GROUP5/domain/order"
+	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/helpers"
+	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/models"
+	"github.com/gorilla/mux"
 )
+
+//GetOrder gets an order from ES database
+func GetOrder(w http.ResponseWriter, r *http.Request) {
+
+	muxVars := mux.Vars(r)
+	orderID := muxVars["id"]
+
+	query := cqrs.NewQueryMessage(&domain_order.GetOrderQuery{OrderID: orderID})
+
+	err := domain.QueryBus.Dispatch(query, &w)
+	if err != nil {
+		helpers.WriteErrorJSON(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+}
 
 //CreateOrder creates a new CreateOrder command (CQRS pattern)
 func CreateOrder(w http.ResponseWriter, r *http.Request) {
@@ -46,13 +62,7 @@ func UpdateOrder(w http.ResponseWriter, r *http.Request) {
 	}
 
 	muxVars := mux.Vars(r)
-	orderID, err := helpers.ParseUInt(muxVars["id"])
-
-	if err != nil {
-		log.Printf("could not parse id into int: %v", err)
-		helpers.WriteErrorJSON(w, http.StatusInternalServerError, "could not parse id")
-		return
-	}
+	orderID := muxVars["id"]
 
 	command := cqrs.NewCommandMessage(&domain_order.UpdateOrderCommand{
 		IDOrder:   orderID,
@@ -60,8 +70,7 @@ func UpdateOrder(w http.ResponseWriter, r *http.Request) {
 		EventType: eventsourcing.UpdateOrder,
 	})
 
-	err = domain.CommandBus.Dispatch(command)
-
+	err := domain.CommandBus.Dispatch(command)
 	if err != nil {
 		helpers.WriteErrorJSON(w, http.StatusInternalServerError, err.Error())
 		return
@@ -80,13 +89,7 @@ func AddOrderLine(w http.ResponseWriter, r *http.Request) {
 	}
 
 	muxVars := mux.Vars(r)
-	orderID, err := helpers.ParseUInt(muxVars["id"])
-
-	if err != nil {
-		log.Printf("could not parse id into int: %v", err)
-		helpers.WriteErrorJSON(w, http.StatusInternalServerError, "could not parse id")
-		return
-	}
+	orderID := muxVars["id"]
 
 	command := cqrs.NewCommandMessage(&domain_order.AddOrderLineCommand{
 		IDOrder:   orderID,
@@ -95,8 +98,7 @@ func AddOrderLine(w http.ResponseWriter, r *http.Request) {
 		EventType: eventsourcing.AddOrderLine,
 	})
 
-	err = domain.CommandBus.Dispatch(command)
-
+	err := domain.CommandBus.Dispatch(command)
 	if err != nil {
 		helpers.WriteErrorJSON(w, http.StatusInternalServerError, err.Error())
 		return
@@ -108,13 +110,7 @@ func AddOrderLine(w http.ResponseWriter, r *http.Request) {
 //UpdateOrderLineQuantity creates a new UpdateOrderLineQuantity command
 func UpdateOrderLineQuantity(w http.ResponseWriter, r *http.Request) {
 	muxVars := mux.Vars(r)
-	orderLineID, err := helpers.ParseUInt(muxVars["id"])
-
-	if err != nil {
-		log.Printf("could not parse id into int: %v", err)
-		helpers.WriteErrorJSON(w, http.StatusInternalServerError, "could not parse id")
-		return
-	}
+	orderLineID := muxVars["id"]
 
 	orderLineQuantity, err := helpers.ParseUInt(muxVars["quantity"])
 
@@ -143,20 +139,14 @@ func UpdateOrderLineQuantity(w http.ResponseWriter, r *http.Request) {
 //DeleteOrderLine creates a new DeleteOrderLine command
 func DeleteOrderLine(w http.ResponseWriter, r *http.Request) {
 	muxVars := mux.Vars(r)
-	orderLineID, err := helpers.ParseUInt(muxVars["id"])
-
-	if err != nil {
-		log.Printf("could not parse id into int: %v", err)
-		helpers.WriteErrorJSON(w, http.StatusInternalServerError, "could not parse id")
-		return
-	}
+	orderLineID := muxVars["id"]
 
 	command := cqrs.NewCommandMessage(&domain_order.DeleteOrderLine{
 		IDOrderLine: orderLineID,
 		EventType:   eventsourcing.DeleteOrderLine,
 	})
 
-	err = domain.CommandBus.Dispatch(command)
+	err := domain.CommandBus.Dispatch(command)
 
 	if err != nil {
 		helpers.WriteErrorJSON(w, http.StatusInternalServerError, err.Error())

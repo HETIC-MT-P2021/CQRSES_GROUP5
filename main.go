@@ -3,11 +3,11 @@ package main
 import (
 	"context"
 	"encoding/gob"
-	"github.com/HETIC-MT-P2021/gocqrs/database"
-	"github.com/HETIC-MT-P2021/gocqrs/domain"
-	"github.com/HETIC-MT-P2021/gocqrs/models"
-	"github.com/HETIC-MT-P2021/gocqrs/rabbitmq"
-	"github.com/HETIC-MT-P2021/gocqrs/router"
+	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/database"
+	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/domain"
+	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/models"
+	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/rabbitmq"
+	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/router"
 	"log"
 	"net/http"
 	"os"
@@ -30,20 +30,15 @@ func main() {
 		log.Fatalf("could not connect to rabbitMQ: %v", err)
 	}
 
-	err = rabbitmq.StartRBMQConsumer()
-	if err != nil {
-		log.Fatalf("could not start rabbitMQ consumer: %v", err)
-	}
-
-	esCfg := &database.ConfigEs{URL: "http://es:9200"}
-
 	ctx := context.Background()
 
 	foreverLoopDelay := 5 * time.Second
 
-	if err := database.ConnectES(ctx, esCfg, foreverLoopDelay); err != nil {
+	if _, err := database.GetEsConn(ctx, foreverLoopDelay); err != nil {
 		log.Fatalf("could not connect to es: %v", err)
 	}
+
+	log.Printf("database.EsConn: %v", database.EsConn)
 
 	domain.InitBusses()
 	gob.Register(models.Order{})
