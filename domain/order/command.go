@@ -3,13 +3,12 @@ package domainorder
 import (
 	"errors"
 	"fmt"
-	"time"
-
 	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/core/cqrs"
 	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/core/eventsourcing"
 	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/helpers"
 	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/models"
 	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/services"
+	"time"
 )
 
 //CreateOrderCommand is a dto to pass the customer info and the event type, in order to create the command
@@ -130,7 +129,7 @@ type AddOrderLineCommandHandler struct{}
 func (ch AddOrderLineCommandHandler) Handle(command cqrs.CommandMessage) error {
 	switch cmd := command.Payload().(type) {
 	case *AddOrderLineCommand:
-		orderLine := models.OrderLine{
+		orderLine := &models.OrderLine{
 			Meal:     cmd.Meal,
 			Price:    cmd.Price,
 			OrderID:  cmd.IDOrder,
@@ -170,7 +169,7 @@ type UpdateQuantityCommandHandler struct{}
 func (ch UpdateQuantityCommandHandler) Handle(command cqrs.CommandMessage) error {
 	switch cmd := command.Payload().(type) {
 	case *UpdateQuantityCommand:
-		orderLine := models.OrderLine{
+		orderLine := &models.OrderLine{
 			ID:       cmd.IDOrderLine,
 			Quantity: cmd.Quantity,
 		}
