@@ -2,8 +2,9 @@ package elasticsearch
 
 import (
 	"context"
-	"github.com/HETIC-MT-P2021/gocqrs/models"
+	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/models"
 	"github.com/olivere/elastic/v7"
+	"github.com/google/uuid"
 )
 
 // Indexes for ES
@@ -35,7 +36,8 @@ func (repository *OrderRepository) GetOrderLine(ctx context.Context, orderLineID
 
 //PersistOrder persists the order as is in elastic search
 func (repository *OrderRepository) PersistOrder(ctx context.Context, order *models.Order) error {
-
+	order.ID = uuid.New().String()
+	
 	return repository.EsConnector.NewDocument(ctx, OrderIndex, &Document{
 		ID:   order.ID,
 		Body: order,
@@ -44,7 +46,8 @@ func (repository *OrderRepository) PersistOrder(ctx context.Context, order *mode
 
 //PersistOrderLine persists a fixed state of orderLine
 func (repository *OrderRepository) PersistOrderLine(ctx context.Context, orderLine *models.OrderLine) error {
-
+	orderLine.ID = uuid.New().String()
+	
 	return repository.EsConnector.NewDocument(ctx, OrderLineIndex, &Document{
 		ID:   orderLine.ID,
 		Body: orderLine,

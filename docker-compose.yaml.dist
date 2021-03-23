@@ -68,6 +68,7 @@ services:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
       RABBITMQ_PORT: 5672
+      ES_URL: "http://es:9200"
     ports:
       - "8080:8080"
     volumes:

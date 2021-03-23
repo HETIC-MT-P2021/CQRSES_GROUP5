@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/HETIC-MT-P2021/gocqrs/core/cqrs"
-	"github.com/HETIC-MT-P2021/gocqrs/core/eventsourcing"
-	"github.com/HETIC-MT-P2021/gocqrs/helpers"
-	"github.com/HETIC-MT-P2021/gocqrs/models"
-	"github.com/HETIC-MT-P2021/gocqrs/services"
+	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/core/cqrs"
+	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/core/eventsourcing"
+	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/helpers"
+	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/models"
+	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/services"
 )
 
 //CreateOrderCommand is a dto to pass the customer info and the event type, in order to create the command

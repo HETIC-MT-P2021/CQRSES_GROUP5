@@ -1,9 +1,9 @@
 package router
 
 import (
-	"github.com/HETIC-MT-P2021/gocqrs/controllers"
-	"github.com/HETIC-MT-P2021/gocqrs/controllers/auth"
-	"github.com/HETIC-MT-P2021/gocqrs/helpers"
+	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/controllers"
+	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/controllers/auth"
+	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/helpers"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gorilla/mux"
 	"log"

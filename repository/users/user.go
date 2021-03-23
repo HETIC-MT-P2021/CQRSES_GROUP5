@@ -2,7 +2,7 @@ package users
 
 import (
 	"database/sql"
-	"github.com/HETIC-MT-P2021/gocqrs/models"
+	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/models"
 )
 
 //GetUser is for getting a user by username

@@ -7,10 +7,10 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/HETIC-MT-P2021/gocqrs/core/cqrs"
-	"github.com/HETIC-MT-P2021/gocqrs/database"
-	"github.com/HETIC-MT-P2021/gocqrs/helpers"
-	"github.com/HETIC-MT-P2021/gocqrs/services/elasticsearch"
+	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/core/cqrs"
+	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/database"
+	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/helpers"
+	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/services/elasticsearch"
 )
 
 //GetOrderQuery is a dto to pass the order id, in order to create the query for order

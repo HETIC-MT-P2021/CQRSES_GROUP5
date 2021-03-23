@@ -4,12 +4,12 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/HETIC-MT-P2021/gocqrs/core/cqrs"
-	"github.com/HETIC-MT-P2021/gocqrs/core/eventsourcing"
-	"github.com/HETIC-MT-P2021/gocqrs/domain"
-	domain_order "github.com/HETIC-MT-P2021/gocqrs/domain/order"
-	"github.com/HETIC-MT-P2021/gocqrs/helpers"
-	"github.com/HETIC-MT-P2021/gocqrs/models"
+	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/core/cqrs"
+	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/core/eventsourcing"
+	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/domain"
+	domain_order "github.com/HETIC-MT-P2021/CQRSES_GROUP5/domain/order"
+	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/helpers"
+	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/models"
 	"github.com/gorilla/mux"
 )
 

@@ -5,8 +5,8 @@ import (
 	"encoding/gob"
 	"log"
 
-	"github.com/HETIC-MT-P2021/gocqrs/core/eventsourcing"
-	"github.com/HETIC-MT-P2021/gocqrs/rabbitmq"
+	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/core/eventsourcing"
+	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/rabbitmq"
 	"github.com/streadway/amqp"
 )
 
