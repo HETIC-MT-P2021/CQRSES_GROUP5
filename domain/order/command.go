@@ -48,10 +48,10 @@ type DeleteOrderLine struct {
 }
 
 //OrderCommandHandler is a struct use for OrderCommand methods
-type OrderCommandHandler struct{}
+type CreateOrderCommandHandler struct{}
 
 //Handle handles the order command and pushes the right event to RMQ
-func (ch OrderCommandHandler) Handle(command cqrs.CommandMessage) error {
+func (ch CreateOrderCommandHandler) Handle(command cqrs.CommandMessage) error {
 	switch cmd := command.Payload().(type) {
 	case *CreateOrderCommand:
 		order := models.Order{
@@ -73,7 +73,24 @@ func (ch OrderCommandHandler) Handle(command cqrs.CommandMessage) error {
 		if err != nil {
 			return fmt.Errorf("failed to publish an event: %v", err)
 		}
+	default:
+		return errors.New("bad command type")
+	}
 
+	return nil
+}
+
+//NewOrderCommandHandler returns a new OrderCommandHandler
+func NewCreateOrderCommandHandler() *CreateOrderCommandHandler {
+	return &CreateOrderCommandHandler{}
+}
+
+//OrderCommandHandler is a struct use for OrderCommand methods
+type UpdateOrderCommandHandler struct{}
+
+//Handle handles the order command and pushes the right event to RMQ
+func (ch UpdateOrderCommandHandler) Handle(command cqrs.CommandMessage) error {
+	switch cmd := command.Payload().(type) {
 	case *UpdateOrderCommand:
 		order := &models.Order{
 			ID:       cmd.IDOrder,
@@ -102,15 +119,15 @@ func (ch OrderCommandHandler) Handle(command cqrs.CommandMessage) error {
 }
 
 //NewOrderCommandHandler returns a new OrderCommandHandler
-func NewOrderCommandHandler() *OrderCommandHandler {
-	return &OrderCommandHandler{}
+func NewUpdateOrderCommandHandler() *UpdateOrderCommandHandler {
+	return &UpdateOrderCommandHandler{}
 }
 
 //OrderLineCommandHandler is a struct use for OrderCommandLine methods
-type OrderLineCommandHandler struct{}
+type AddOrderLineCommandHandler struct{}
 
 //Handle handles the order line command and pushes the right event to RMQ
-func (ch OrderLineCommandHandler) Handle(command cqrs.CommandMessage) error {
+func (ch AddOrderLineCommandHandler) Handle(command cqrs.CommandMessage) error {
 	switch cmd := command.Payload().(type) {
 	case *AddOrderLineCommand:
 		orderLine := models.OrderLine{
@@ -134,6 +151,24 @@ func (ch OrderLineCommandHandler) Handle(command cqrs.CommandMessage) error {
 			return fmt.Errorf("failed to publish an event: %v", err)
 		}
 
+	default:
+		return errors.New("bad command type")
+	}
+
+	return nil
+}
+
+//NewOrderLineCommandHandler returns a new OrderLineCommandHandler
+func NewAddOrderLineCommandHandler() *AddOrderLineCommandHandler {
+	return &AddOrderLineCommandHandler{}
+}
+
+//OrderLineCommandHandler is a struct use for OrderCommandLine methods
+type UpdateQuantityCommandHandler struct{}
+
+//Handle handles the order line command and pushes the right event to RMQ
+func (ch UpdateQuantityCommandHandler) Handle(command cqrs.CommandMessage) error {
+	switch cmd := command.Payload().(type) {
 	case *UpdateQuantityCommand:
 		orderLine := models.OrderLine{
 			ID:       cmd.IDOrderLine,
@@ -154,6 +189,24 @@ func (ch OrderLineCommandHandler) Handle(command cqrs.CommandMessage) error {
 			return fmt.Errorf("failed to publish an event: %v", err)
 		}
 
+	default:
+		return errors.New("bad command type")
+	}
+
+	return nil
+}
+
+//NewOrderLineCommandHandler returns a new OrderLineCommandHandler
+func NewUpdateQuantityCommandHandler() *UpdateQuantityCommandHandler {
+	return &UpdateQuantityCommandHandler{}
+}
+
+//OrderLineCommandHandler is a struct use for OrderCommandLine methods
+type DeleteOrderLineCommandHandler struct{}
+
+//Handle handles the order line command and pushes the right event to RMQ
+func (ch DeleteOrderLineCommandHandler) Handle(command cqrs.CommandMessage) error {
+	switch cmd := command.Payload().(type) {
 	case *DeleteOrderLine:
 		// Creates and send an Event to RabbitMQ
 		updateQuantityEvent := eventsourcing.Event{
@@ -177,6 +230,7 @@ func (ch OrderLineCommandHandler) Handle(command cqrs.CommandMessage) error {
 }
 
 //NewOrderLineCommandHandler returns a new OrderLineCommandHandler
-func NewOrderLineCommandHandler() *OrderLineCommandHandler {
-	return &OrderLineCommandHandler{}
+func NewDeleteOrderLineCommandHandler() *DeleteOrderLineCommandHandler {
+	return &DeleteOrderLineCommandHandler{}
 }
+
