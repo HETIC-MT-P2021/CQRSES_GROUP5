@@ -26,8 +26,6 @@ func GetOrder(w http.ResponseWriter, r *http.Request) {
 		helpers.WriteErrorJSON(w, http.StatusInternalServerError, err.Error())
 		return
 	}
-
-	helpers.WriteJSON(w, http.StatusOK, "hellow")
 }
 
 //CreateOrder creates a new CreateOrder command (CQRS pattern)

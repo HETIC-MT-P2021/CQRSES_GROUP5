@@ -22,4 +22,6 @@ func InitBusses() {
 	_ = CommandBus.RegisterHandler(domain_order.NewAddOrderLineCommandHandler(), &domain_order.AddOrderLineCommand{})
 	_ = CommandBus.RegisterHandler(domain_order.NewUpdateQuantityCommandHandler(), &domain_order.UpdateQuantityCommand{})
 	_ = CommandBus.RegisterHandler(domain_order.NewDeleteOrderLineCommandHandler(), &domain_order.DeleteOrderLine{})
+
+	_ = QueryBus.RegisterHandler(domain_order.NewOrderQueryHandler(), &domain_order.GetOrderQuery{})
 }
