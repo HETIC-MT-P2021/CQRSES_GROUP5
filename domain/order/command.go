@@ -162,7 +162,7 @@ func NewAddOrderLineCommandHandler() *AddOrderLineCommandHandler {
 	return &AddOrderLineCommandHandler{}
 }
 
-//OrderLineCommandHandler is a struct use for OrderCommandLine methods
+//UpdateQuantityCommandHandler is a struct use for OrderCommandLine methods
 type UpdateQuantityCommandHandler struct{}
 
 //Handle handles the UpdateQuantityCommand and pushes the right event to RMQ
@@ -228,7 +228,7 @@ func (ch DeleteOrderLineCommandHandler) Handle(command cqrs.CommandMessage) erro
 	return nil
 }
 
-//NewDeleteLineCommandHandler returns a new DeleteOrderLineCommandHandler
+//NewDeleteOrderLineCommandHandler returns a new DeleteOrderLineCommandHandler
 func NewDeleteOrderLineCommandHandler() *DeleteOrderLineCommandHandler {
 	return &DeleteOrderLineCommandHandler{}
 }
