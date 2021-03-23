@@ -233,4 +233,3 @@ func (ch DeleteOrderLineCommandHandler) Handle(command cqrs.CommandMessage) erro
 func NewDeleteOrderLineCommandHandler() *DeleteOrderLineCommandHandler {
 	return &DeleteOrderLineCommandHandler{}
 }
-
