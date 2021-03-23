@@ -52,7 +52,8 @@ func ConnectES(ctx context.Context, foreverLoopDelay time.Duration) error {
 		if err != nil {
 			log.Printf("%v... retrying", err)
 		} else {
-			fmt.Printf("Elasticsearch returned with code %d and version %s\n", code, info.Version.Number)
+			log.Printf("Elasticsearch returned with code %d and version %s\n", code,
+				info.Version.Number)
 			EsConn = client
 			log.Printf("connected to es client")
 

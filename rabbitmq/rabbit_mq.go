@@ -38,8 +38,6 @@ func ConnectToRabbitMq() error {
 		return fmt.Errorf("failed to parse env: %v", err)
 	}
 
-	fmt.Printf("Config Rabbit MQ : %+v \n", cfg)
-
 	conn, err := amqp.Dial(fmt.Sprintf("amqp://%s:%s@%s:%s",
 		cfg.RabbitMqPass,
 		cfg.RabbitMqUser,
