@@ -5,6 +5,7 @@ import (
 	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/models"
 	"github.com/google/uuid"
 	"github.com/olivere/elastic/v7"
+	"time"
 )
 
 // Indexes for ES
@@ -37,6 +38,7 @@ func (repository *OrderRepository) GetOrderLine(ctx context.Context, orderLineID
 //PersistOrder persists the order as is in elastic search
 func (repository *OrderRepository) PersistOrder(ctx context.Context, order *models.Order) error {
 	order.ID = uuid.New().String()
+	order.Date = time.Now()
 
 	return repository.EsConnector.NewDocument(ctx, OrderIndex, &Document{
 		ID:   order.ID,
