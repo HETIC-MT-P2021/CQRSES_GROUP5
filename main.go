@@ -37,7 +37,7 @@ func main() {
 	if _, err := database.GetEsConn(ctx, foreverLoopDelay); err != nil {
 		log.Fatalf("could not connect to es: %v", err)
 	}
-	
+
 	log.Printf("database.EsConn: %v", database.EsConn)
 
 	domain.InitBusses()

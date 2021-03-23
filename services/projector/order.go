@@ -12,12 +12,12 @@ import (
 
 //ProjectEvent project an event into a readModel depending on the event type
 func ProjectEvent(ctx context.Context, event eventsourcing.Event) error {
-	
-	esConn, err := database.GetEsConn(ctx, 5 * time.Second)
+
+	esConn, err := database.GetEsConn(ctx, 5*time.Second)
 	if err != nil {
 		return fmt.Errorf("could not get es connection : %v", err)
 	}
-	
+
 	orderRepository := elasticsearch.NewOrderRepository(esConn)
 
 	switch event.Type {

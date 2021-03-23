@@ -18,13 +18,14 @@ type ConfigEs struct {
 	URL string `env:"ES_URL"`
 }
 
+//GetEsConn returns the es client connexion.
 func GetEsConn(ctx context.Context, foreverLoopDelay time.Duration) (*elastic.Client, error) {
 	if EsConn == nil {
 		if err := ConnectES(ctx, foreverLoopDelay); err != nil {
 			return nil, fmt.Errorf("could not connect elastic search: %v", err)
 		}
 	}
-	
+
 	return EsConn, nil
 }
 
@@ -34,12 +35,12 @@ func ConnectES(ctx context.Context, foreverLoopDelay time.Duration) error {
 	if err := env.Parse(&cfg); err != nil {
 		return fmt.Errorf("could not parse env : %v", err)
 	}
-	
+
 	client, err := elastic.NewClient(
 		elastic.SetHealthcheck(true),
 		elastic.SetSniff(false),
 		elastic.SetURL(cfg.URL),
-		elastic.SetHealthcheckInterval(15 * time.Second),
+		elastic.SetHealthcheckInterval(15*time.Second),
 	)
 	if err != nil {
 		return fmt.Errorf("could not create an elastic search client : %v", err)

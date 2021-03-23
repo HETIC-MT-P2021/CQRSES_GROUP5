@@ -62,7 +62,7 @@ func (connector *EsConnector) NewDocument(ctx context.Context, index string, doc
 			return fmt.Errorf("could not create index: %s", index)
 		}
 	}
-	
+
 	documentIndexed, err := connector.client.Index().
 		Index(index).
 		BodyJson(document.Body).

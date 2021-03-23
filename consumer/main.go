@@ -19,13 +19,13 @@ func main() {
 	if err != nil {
 		log.Fatalf("could not connect to rabbitmq: %v", err)
 	}
-	
+
 	ch, err := conn.Channel()
 
 	if err != nil {
 		log.Fatalf("failed to open a channel: %v", err)
 	}
-	
+
 	//cfg := &config.Config{
 	//	URL:         "http://127.0.0.1:9200",
 	//}
@@ -35,7 +35,7 @@ func main() {
 	//	log.Printf("err : %v", err)
 	//	return
 	//}
-	
+
 	//log.Printf("client: %+v", client)
 
 	q, err := ch.QueueDeclare(
@@ -82,7 +82,7 @@ func main() {
 			if err := dec.Decode(&e); err != nil {
 				log.Fatal(err)
 			}
-			
+
 			log.Printf("event : %+v", e)
 
 			if err := projector.ProjectEvent(ctx, e); err != nil {
