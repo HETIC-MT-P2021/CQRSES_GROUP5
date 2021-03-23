@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"github.com/olivere/elastic/v7"
-	"log"
 )
 
 //EsConnector encapsulates ES client for all es methods
@@ -54,9 +53,7 @@ func (connector *EsConnector) NewIndex(ctx context.Context, index string) error 
 
 //NewDocument creates a new document in ES (by Index)
 func (connector *EsConnector) NewDocument(ctx context.Context, index string, document *Document) error {
-	log.Printf("connector.client : %+v", connector.client)
 	exists, err := connector.client.IndexExists(index).Do(ctx)
-	log.Printf(" exists %v", exists)
 	if !exists {
 		if err := connector.NewIndex(ctx, index); err != nil {
 			return fmt.Errorf("could not create index: %s", index)
