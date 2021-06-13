@@ -1,22 +1,28 @@
 package services
 
 import (
+	"github.com/HETIC-MT-P2021/CQRSES_GROUP5/core/eventsourcing"
 	"github.com/golang/mock/gomock"
 	"testing"
+	"time"
 )
 
 func TestPublishEventToRBMQ(t *testing.T) {
 	ctrl := gomock.NewController(t)
 
-	// Assert that Bar() is invoked.
 	defer ctrl.Finish()
 
 	m := NewMockRabbitMQ(ctrl)
 
-	// Asserts that the first and only call to Bar() is passed 99.
-	// Anything else will fail.
+	testEvent := eventsourcing.Event{
+		Type:           eventsourcing.AddOrder,
+		Payload:        "4",
+		CreatedAt:      time.Time{},
+		AggregateIndex: 1, // Order aggregation Index
+	}
+
 	m.
 		EXPECT().
-		PublishEventToRBMQ(gomock.Eq(99)).
+		PublishEventToRBMQ(testEvent).
 		Return(nil)
 }
