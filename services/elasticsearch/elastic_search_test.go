@@ -3,7 +3,7 @@ package elasticsearch
 import (
 	"context"
 	"github.com/golang/mock/gomock"
-"testing"
+	"testing"
 )
 
 func TestEsConnector_NewIndex(t *testing.T) {
