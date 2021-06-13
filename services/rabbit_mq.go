@@ -10,6 +10,10 @@ import (
 	"github.com/streadway/amqp"
 )
 
+type RabbitMQ interface {
+	PublishEventToRBMQ(eventsourcing.Event) error
+}
+
 //PublishEventToRBMQ publishes an event sourcing event to RBMQ
 func PublishEventToRBMQ(event eventsourcing.Event) error {
 
